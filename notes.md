@@ -16,3 +16,12 @@ Configure your github account in the terminal:
 Check if there are changes to commit:
 ➜  git fetch
 ➜  git status
+
+Development and production environments:
+     it is critical to separate where you develop your application, from where the production release of your application is made publicly available
+
+     You should never consider your production environment as the place where you develop or experiment with your application
+
+     You run a deployment script from a console window in your development environment with a command like the following:
+         ./deployService.sh -k ~/prod.pem -h yourdomain.click -s simon
+        
