@@ -24,4 +24,7 @@ Development and production environments:
 
      You run a deployment script from a console window in your development environment with a command like the following:
          ./deployService.sh -k ~/prod.pem -h yourdomain.click -s simon
+
+dig (url) gives you the ip address of a website
+
         
