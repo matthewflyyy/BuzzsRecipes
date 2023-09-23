@@ -27,4 +27,5 @@ Development and production environments:
 
 dig (url) gives you the ip address of a website
 
+The local host ip address is 127.0.0.1 is just to access your own local machine
         
