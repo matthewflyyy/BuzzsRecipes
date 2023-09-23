@@ -4,7 +4,7 @@ As a college student, it is hard to find time to do all that you have to do in a
 
 ## Design
 ### Wireframe
-    ![Image of Home page wireframe](<Diagrams/Wirefram HomeScreen.png>)
-    ![Alt text](<Diagrams/Wireframe Recipe Section.png>)
+![Image of Home page wireframe](<Diagrams/Wirefram HomeScreen.png>)
+![Alt text](<Diagrams/Wireframe Recipe Section.png>)
 ### Userflow Diagram
-    ![Alt text](<Diagrams/User flow chart.png>)
+![Alt text](<Diagrams/User flow chart.png>)
