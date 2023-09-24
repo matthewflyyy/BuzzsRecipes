@@ -29,4 +29,5 @@ View available recipes
 - Web Services: Backend service for log in and creating and retrieving recipes
 - Authentification: Create account and log in securely to your account. Users can't save or create recipes unless they are logged in.
 - Database Data: Stores all the recipes put into the website as well as the recipes that a specific user saves to their account.
-- 
+- WebSocket Data: Recipes are added to the website's "Browse" section as they are added by users and a user can be sent a recipe by a friend.
+
