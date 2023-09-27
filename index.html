@@ -1,3 +1,48 @@
 <!DOCTYPE html>
-<h1>Hellow World</h1>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Tell browsers not to scale the viewport automatically -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buzz's Recipes</title>
+    <link rel="icon" href="favicon.ico" /> <!-- creates the icon that goes on the tab-->
+  </head>
+  <body>
+    <!-- Use header, main, and footer elements to give semantic structure -->
+    <header>
+      <h1>Buzz's Recipes<sup>&reg;</sup></h1>
+
+      <!-- Navigation elements -->
+      <nav>
+        <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
+        <menu>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="recipes.html">Recipes</a></li>
+          <li><a href="login.html">Log In</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="account.html">My Account</a></li>
+        </menu>
+      </nav>
+
+      <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
+      <hr />
+    </header>
+
+    <main>
+      <h1>Welcome</h1>
+      <p>Login to play</p>
+      <form method="get" action="play.html"> <!-- Creates the log in form and goes to play.html when you submit it-->
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Your name here" />
+        <button type="submit">Login</button>
+      </form>
+    </main>
+
+    <footer>
+      <hr />
+      <span class="text-reset">Matthew Nelson</span>
+      <br />
+      <a href="https://github.com/matthewflyyy/cs260Fall2023">GitHub</a> <!-- Put github repository at the bottom-->
+    </footer>
+  </body>
 </html>
