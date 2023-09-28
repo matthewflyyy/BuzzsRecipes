@@ -16,11 +16,42 @@
       <nav>
         <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
         <menu>
+            <!-- Dropdown menu to implement with CSS -->
+            <!-- <div class="navbar"> 
+                <a href="index.html">Home</a>
+                <div class="dropdown">
+                    <button class="dropbtn">Recipes
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="recipes.html">All</a>
+                        <a href="#">Breakfast</a>
+                        <a href="#">Lunch</a>
+                        <a href="#">Dinner</a>
+                    </div>
+                </div>
+                <a href="login.html">Login</a>
+                <a href="about.html">About</a>
+                <a href="myaccount.html">My Account</a>
+            </div> -->
+
+
           <li><a href="index.html">Home</a></li>
-          <li><a href="recipes.html">Recipes</a></li>
+          <li>
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">Recipes</button>
+                <div id="myDropdown" class="dropdown-content">
+                <a href="recipes.html">All</a>
+                <a href="#">Breakfast</a>
+                <a href="#">Lunch</a>
+                <a href="#">Dinner</a>
+                </div>
+            </div>
+          </li>
           <li><a href="login.html">Log In</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="myaccount.html">My Account</a></li>
+          
         </menu>
       </nav>
 
@@ -30,6 +61,7 @@
 
     <main>
       <h1>Welcome</h1>
+      <p>Finding recipes just got a lot easier. </p>
     </main>
 
     <footer>
