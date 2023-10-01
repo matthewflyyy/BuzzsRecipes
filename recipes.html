@@ -17,7 +17,17 @@
         <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
         <menu>
           <li><a href="index.html">Home</a></li>
-          <li><a href="recipes.html">Recipes</a></li>
+          <li>
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">Recipes</button>
+                <div id="myDropdown" class="dropdown-content">
+                <a href="recipes.html">All</a>
+                <a href="breakfast.html">Breakfast</a>
+                <a href="lunch.html">Lunch</a>
+                <a href="dinner.html">Dinner</a>
+                </div>
+            </div>
+          </li>
           <li><a href="login.html">Log In</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="myaccount.html">My Account</a></li>
@@ -29,9 +39,10 @@
     </header>
 
     <main>
-      <h1>Recipes</h1>
+      <h1>All Recipes</h1>
       <p>
         <h3> Venezuelan arepas </h3>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Arepa_de_pabellon.jpg/440px-Arepa_de_pabellon.jpg" alt="Arepa with meat" width="200">
         <table>
             <tr>
                 <th>Prep Time</th>
@@ -61,6 +72,43 @@
                 <li>Preheat griddle to medium-high heat with a thin layer of cooking oil.</li>
                 <li>Cook arepas for 5 minutes on each side, reducing heat to medium once flipped.</li>
                 <li>Cut halfway open and enjoy with your favorite fillings!</li>
+            </ol>
+      </p>
+
+
+      <p>
+        <h3> Breakfast Omelette </h3>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Omelet_With_Fixings.jpg/440px-Omelet_With_Fixings.jpg" alt="Omelette" width="200">
+        <table>
+            <tr>
+                <th>Prep Time</th>
+                <th>Cook Time</th>
+                <th>Amount Made</th>
+            </tr>
+            <tr>
+                <td>5 min</td>
+                <td>5 min</td>
+                <td>1 omelette (1 serving)</td>
+            </tr>
+        </table>
+        <h4> Ingedrients </h4>
+            <ul>
+                <li>2 medium to large eggs</li>
+                <li>1 small bell pepper</li>
+                <li>1/8 onion</li>
+                <li>3 leaves spinach</li>
+                <li>Half handful of cheese</li>
+            </ul>
+        <h4> Preparation and cooking instructions </h4>
+            <ol>
+                <li>Dice the vegetables and place in small bowl with cheese.</li>
+                <li>Whisk eggs in a small bowl.</li>
+                <li>Lightly grease small pan and place on stove at medium heat</li>
+                <li>Pour eggs into pan</li>
+                <li>Wait a minute or so and evenly placec vegetables and cheese over egges</li>
+                <li>Once egg is drying up, flip.</li>
+                <li>Let sit for 20-30 seconds and remove from eat.</li>
+                <li>Add salt, peper, salsa or anything else you like and enjoy!</li>
             </ol>
       </p>
     </main>
