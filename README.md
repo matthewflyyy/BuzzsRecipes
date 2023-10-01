@@ -31,7 +31,7 @@ View available recipes
 - Database Data: Stores all the recipes put into the website as well as the recipes that a specific user saves to their account.
 - WebSocket Data: Recipes are added to the website's "Browse" section as they are added by users and a user can be sent a recipe by a friend.
 
-#HTML deliverable
+# HTML deliverable
 
 For this deliverable, I created the outline of my website using HTML.
 
