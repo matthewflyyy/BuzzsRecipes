@@ -31,3 +31,15 @@ View available recipes
 - Database Data: Stores all the recipes put into the website as well as the recipes that a specific user saves to their account.
 - WebSocket Data: Recipes are added to the website's "Browse" section as they are added by users and a user can be sent a recipe by a friend.
 
+#HTML deliverable
+
+For this deliverable, I created the outline of my website using HTML.
+
+- **HTML pages** - 9 HTML pages that represent the home, login, create account, about, and myaccount pages as well as the pages containing all recipes, breakfast recipes, lunch recipes, and dinner recipes.
+- **Links** - Each page has a menu in the header that contains links to the other pages. The log in button takes you to the myaccount page and the create account button takes you to the create account page.
+- **Text** - There is text on the home page as well as on the about page.
+- **Images** - There is an image with lots of food on the home page, and an image with each recipe corresponding to its resulting food.
+- **Login** - Input boxes for username and password with a submit button as well as a button to create a new account.
+- **Database** - The recipes on the site (including the saved recipes on the myaccount page) represent data pulled from the database.
+- **WebSocket** - The message "*Brooklynn just sent you a recipe*" on the myaccount page represents a realtime message of a recipe sent to you from another user.
+
