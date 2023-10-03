@@ -440,3 +440,35 @@ main {
   flex-direction: row;
 }
 ```
+1st one gets 1 unit (25%) of space and content gets 3 (rest of) space. Will always remain constant no matter how we resize things.
+```html
+section:nth-child(1) {
+  flex: 1;
+  background-color: hsl(180, 10%, 80%);
+}
+section:nth-child(2) {
+  flex: 3;
+  background-color: white;
+}
+```
+
+### Media Query
+Drops the header and footer if the viewport gets too short, and orient the main sections as rows if it gets too narrow.
+Support narrow screen (portrait mode), check if we're in portrait mode and sets "flex-direction" to be column instead of row
+Make header and footer disappear: triggers when viewport has max value of 700px. Change "display" for header and footer to "none"
+```html
+@media (orientation: portrait) {
+  main {
+    flex-direction: column;
+  }
+}
+
+@media (max-height: 700px) {
+  header {
+    display: none;
+  }
+  footer {
+    display: none;
+  }
+}
+```
