@@ -472,3 +472,67 @@ Make header and footer disappear: triggers when viewport has max value of 700px.
   }
 }
 ```
+
+## CSS Frameworks
+Open source repositories that make web development easier. Basically, allows you to do CSS really fast.
+
+### Tailwind
+A new contender in CSS framework space. Is different than most bc it uses smaller definitions that are applied specifically to individual HTML elements.
+```html
+<div class="pt-6 md:p-8 text-center md:text-left space-y-4">
+  <img class="w-24 h-24 md:w-48 md:h-auto md:rounded-none rounded-full mx-auto" src="profile.png" />
+  <p class="text-lg font-medium">“Tailwind CSS”</p>
+</div>
+```
+
+### Bootstrap
+Getting started with Bootstrap: https://getbootstrap.com/docs/5.2/getting-started/introduction/
+1. Include <meta name="viewport"> in html file for proper responsive behavior in mobile devices.
+2. Place <link> tag in <head> for Bootstrap CSS, and <script> tag for Bootstrap JavaScript bundle before closing </body>.
+3. Now you can start building w/ Bootstrap
+
+Bootstrap is the favorite CSS framework. Bc it's so popular, users recognize the style and how to use a website like it, but it may not grab their attention.
+
+#### Getting bootstrap
+This references bootstrap CSS files from their content delivery network(CDN) and adds HTML link elements to head element:
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    ...
+  </body>
+</html>
+```
+If you use bootstrap components that involve JavaScript, include bootstrap's JavaScript module at the end of your HTML body element.
+```html
+<body>
+  ...
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"
+  ></script>
+</body>
+```
+To include bootstrap using NPM in your application (numbers are the specific version):
+```html
+npm install bootstrap@5.2.3
+```
+#### Using bootstrap
+Simple button: btn gets the button and btn-primary shades the button which defaults to Blue
+```html
+// Bootstrap styled button
+<button type="button" class="btn btn-primary">Bootstrap</button>
+
+// Default browser styled button
+<button type="button">Plain</button>
+```
