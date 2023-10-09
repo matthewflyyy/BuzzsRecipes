@@ -102,3 +102,15 @@ main {
     flex: 1 100vh;
 }
 }
+
+.button {
+    background-color: #363537;
+    color: white;
+    padding: 10px;
+    border: solid thin darkgray;
+    border-radius: 5px;
+}
+
+.button:hover{
+    background-color: darkgray;
+}

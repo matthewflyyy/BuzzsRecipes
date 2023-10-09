@@ -7,6 +7,7 @@
         <title>Buzz's Recipes</title>
         <link rel="icon" href="favicon.ico" /> <!-- creates the icon that goes on the tab-->
         <link rel="stylesheet" href="main.css" />
+        <link rel="stylesheet" href="login.css" />
 
     </head>
     <body>
@@ -38,26 +39,26 @@
         </header>
 
         <main>
-            <h1>Welcome Back</h1>
-            <p>Login to save and share recipes!</p>
-            <form method="get" action="myaccount.html"> <!-- Creates the log in form and goes to play.html when you submit it-->
-            <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Your username here" />
-            <p><label for="password">Password</label>
-            <input type="text" id="password" placeholder="Your password here" /></p>
-            <p>
-                <button type="submit">Log in</button>
-            </p>
-            </form> 
-            <form method="get" action="createaccount.html">
-                <button type="submit">Create Account</button>
-            </form>
+            <div class="login-box">
+            <div class="welcome">Welcome Back!</div>
+            <div class="explanation">Login to save and share recipes!</div>
+                <form method="get" action="myaccount.html"> <!-- Creates the log in form and goes to play.html when you submit it-->
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Your username here" />
+                    <p><label for="password">Password</label>
+                    <input type="text" id="password" placeholder="Your password here" /></p>
+                    <p>
+                        <button class="button" type="submit">Log in</button>
+                        <button class="button" type="submit" formaction="createaccount.html">Create Account</button>
+                    </p>
+                </form> 
+            </div>
             
         </main> 
         <footer>
-            <p>Matthew Nelson<p>
+            <p>Matthew Nelson</p>
             <br />
-            <a href="https://github.com/matthewflyyy/cs260Fall2023">GitHub</a> <!-- Put github repository at the bottom-->
-        </footer>
+            <a class="github" href="https://github.com/matthewflyyy/cs260Fall2023">GitHub</a> <!-- Put github repository at the bottom-->
+          </footer>
     </body>
 </html>
