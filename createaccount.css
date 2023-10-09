@@ -1,0 +1,17 @@
+.login-box{
+    /* margin-top: 10vw; */
+    padding: 5vw;
+    text-align: left;
+    justify-content: center;
+    width: 60vw;
+    background-color: white;
+    text-align: center;
+}
+
+.login-box input{
+    width: 60%;
+}
+
+.login-box a:link, .login-box a:visited{
+    color: black;
+}

@@ -1,16 +1,12 @@
 .welcome{
     display: block;
     font-size: 5vw;
-    /* margin-top: 20px;
-    margin-bottom: 60px; */
     padding: 2vw;
 }
 
 .explanation{
     display: block;
     font-size: 3vw;
-    /* margin-top: 0px;
-    margin-bottom: 6vw; */
     padding: 2vw;
 }
 
