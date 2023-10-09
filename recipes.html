@@ -7,6 +7,7 @@
     <title>Buzz's Recipes</title>
     <link rel="icon" href="favicon.ico" /> <!-- creates the icon that goes on the tab-->
     <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="recipes.css" />
   </head>
   <body>
     <!-- Use header, main, and footer elements to give semantic structure -->
@@ -17,29 +18,24 @@
       <nav>
         <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
         <menu>
-          <li><button href="index.html">Home</a></li>
+          <li><a href="index.html">Home</a></li>
           <li>
             <div class="dropdown">
-              <li><button href="index.html">Home</button></li>
-              <li>
-                <div class="dropdown">
-                    <a class="dropbtn">Recipes</a>
-                    <div id="myDropdown" class="dropdown-content">
-                      <a href="recipes.html">All</a>
-                      <a href="breakfast.html">Breakfast</a>
-                      <a href="lunch.html">Lunch</a>
-                      <a href="dinner.html">Dinner</a>
-                    </div>
+                <a class="dropbtn">Recipes</a>
+                <div id="myDropdown" class="dropdown-content">
+                <a href="recipes.html">All</a>
+                <a href="breakfast.html">Breakfast</a>
+                <a href="lunch.html">Lunch</a>
+                <a href="dinner.html">Dinner</a>
                 </div>
-              </li>
-              <li><button href="login.html">Log In</button></li>
-              <li><button href="about.html">About</button></li>
-              <li><button href="myaccount.html">My Account</button></li>
+            </div>
+          </li>
+          <li><a href="login.html">Log In</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="myaccount.html">My Account</a></li>
         </menu>
       </nav>
 
-      <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
-      <hr />
     </header>
 
     <main>
@@ -118,8 +114,7 @@
     </main>
 
     <footer>
-      <hr />
-      <span class="text-reset">Matthew Nelson</span>
+      <p>Matthew Nelson</p>
       <br />
       <a href="https://github.com/matthewflyyy/cs260Fall2023">GitHub</a> <!-- Put github repository at the bottom-->
     </footer>

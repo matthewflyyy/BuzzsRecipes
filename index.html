@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  <div class="site">
   <head>
     <meta charset="UTF-8" />
     <!-- Tell browsers not to scale the viewport automatically -->
@@ -9,6 +8,7 @@
     <link rel="icon" href="favicon.ico" /> <!-- creates the icon that goes on the tab-->
     <!-- Adding in CSS -->
     <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
     <!-- Use header, main, and footer elements to give semantic structure -->
@@ -20,24 +20,6 @@
         <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
         <menu>
             <!-- Dropdown menu to implement with CSS -->
-            <!-- <div class="navbar"> 
-                <a href="index.html">Home</a>
-                <div class="dropdown">
-                    <button class="dropbtn">Recipes
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="recipes.html">All</a>
-                        <a href="#">Breakfast</a>
-                        <a href="#">Lunch</a>
-                        <a href="#">Dinner</a>
-                    </div>
-                </div>
-                <a href="login.html">Login</a>
-                <a href="about.html">About</a>
-                <a href="myaccount.html">My Account</a>
-            </div> -->
-
 
           <li><a href="index.html">Home</a></li>
           <li>
@@ -58,22 +40,18 @@
         </menu>
       </nav>
 
-      <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
-      <hr />
+ 
     </header>
 
     <main>
       <h1>Welcome</h1>
       <p>Finding recipes just got a lot easier. </p>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/600px-Good_Food_Display_-_NCI_Visuals_Online.jpg" alt="Lots of food" width="200">
     </main>
 
     <footer>
-      <hr />
-      <span class="text-reset">Matthew Nelson</span>
+      <p>Matthew Nelson</p>
       <br />
-      <a href="https://github.com/matthewflyyy/cs260Fall2023">GitHub</a> <!-- Put github repository at the bottom-->
+      <a class="github" href="https://github.com/matthewflyyy/cs260Fall2023">GitHub</a> <!-- Put github repository at the bottom-->
     </footer>
   </body>
-</div>
 </html>

@@ -1,0 +1,20 @@
+main{
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/600px-Good_Food_Display_-_NCI_Visuals_Online.jpg);
+    background-color: #cccccc;
+    height: 500px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    /* filter: brightness(60%) */
+}
+
+main h1{
+    font-size: 80px;
+    color: white;
+}
+
+main p{
+    font-size: 40px;
+    color: white;
+}
