@@ -536,3 +536,89 @@ Simple button: btn gets the button and btn-primary shades the button which defau
 // Default browser styled button
 <button type="button">Plain</button>
 ```
+
+# JavaScript
+Most used programming language in the world.
+
+## Getting Started
+Concatenate a string and output string to debugger console:
+```js
+console.log('Hello' + ' ' + 'world');
+```
+Build functions:
+```js
+function join(a, b) {
+  return a + ' ' + b;
+}
+console.log(join('Hello', 'world'));
+```
+
+## Comments
+```js
+// Line comment
+
+/*
+Block comment
+*/
+```
+## Playgrounds
+Use codepen or use F12 in Chrome to open debugger and open debugger to code JS.
+
+## JS Console
+Provides interaction w/ JS runtime's debugger console.
+
+### Log
+Create formatted messages:
+```js
+console.log('hello %s', 'world');
+// OUTPUT: hello world
+```
+Styled log output:
+```js
+console.log('%c JavaScript Demo', 'font-size:1.5em; color:green;');
+// OUTPUT: JavaScript Demo //in large green text
+```
+
+### Timers
+Wrap piece of code w/ "time" and "timeEnd" and will output duration between time and timeEnd:
+```js
+console.time('demo time');
+// ... some code that takes a long time.
+console.timeEnd('demo time');
+// OUTPUT: demo time: 9762.74 ms
+```
+
+### Count
+See how many times a block of code is called:
+```js
+console.count('a');
+// OUTPUT: a: 1
+console.count('a');
+// OUTPUT: a: 2
+console.count('b');
+// OUTPUT: b: 1
+```
+
+## Adding JS to HTML
+Can add directly to HTML using <script> element or src attribute references outside JS file.
+index.js:
+```js
+function sayHello() {
+  console.log('hello');
+}
+```
+index.html:
+```js
+<head>
+  <script src="javascript.js"></script>
+</head>
+<body>
+  <button onclick="sayHello()">Say Hello</button>
+  <button onclick="sayGoodbye()">Say Goodbye</button>
+  <script>
+    function sayGoodbye() {
+      alert('Goodbye');
+    }
+  </script>
+</body>
+```
