@@ -622,3 +622,159 @@ index.html:
   </script>
 </body>
 ```
+
+## JS Type and Construct
+### Declaring variables
+Declared using let or const. Let allows the variable to be changed while const will cause an error if you try to change it.
+### Type
+| Type        | Meaning                                                    |
+| ----------- | ---------------------------------------------------------- |
+| `Null`      | The type of a variable that has not been assigned a value. |
+| `Undefined` | The type of a variable that has not been defined.          |
+| `Boolean`   | true or false.                                             |
+| `Number`    | A 64 bit signed number.                                    |
+| `BigInt`    | A number of arbitrary magnitude.                           |
+| `String`    | A textual sequence of characters.                          |
+| `Symbol`    | A unique value.                                            |
+
+Object types:
+| Type       | Use                                                                                    | Example                  |
+| ---------- | -------------------------------------------------------------------------------------- | ------------------------ |
+| `Object`   | A collection of properties represented by name value pairs. Values can be of any type. | `{a:3, b:'fish'}`        |
+| `Function` | An object that has the ability to be called.                                           | `function a() {}`        |
+| `Date`     | Calendar dates and times.                                                              | `new Date('1995-12-17')` |
+| `Array`    | An ordered sequence of any type.                                                       | `[3, 'fish']`            |
+| `Map`      | A collection of key value pairs that support efficient lookups.                        | `new Map()`              |
+| `JSON`     | A lightweight data-interchange format used to share information across programs.       | `{"a":3, "b":"fish"}`    |
+
+### Type Conversions
+JS is weakly typed, type of var can change. Automatic, unexpected conversions can occurr:
+```js
+2 + '3';
+// OUTPUT: '23'
+2 * '3';
+// OUTPUT: 6
+[2] + [3];
+// OUTPUT: '23'
+true + null;
+// OUTPUT: 1
+true + undefined;
+// OUTPUT: NaN
+```
+Dealing with the equality operator:
+```js
+1 == '1';
+// OUTPUT: true
+null == undefined;
+// OUTPUT: true
+'' == false;
+// OUTPUT: true
+```
+Use === and !== to get correct answers
+```js
+1 === '1';
+// OUTPUT: false
+null === undefined;
+// OUTPUT: false
+'' === false;
+// OUTPUT: false
+```
+
+### Conditionals
+Supports if, else, and if else. Includes compact if else (ternary operator):
+```js
+a === 1 ? console.log(1) : console.log('not 1');
+```
+Uses && || and !
+
+### Loops
+Suppors for (let i = 0; i < 2; i++), for in, for of, while, do while and switch:
+do while:
+```js
+let i = 0;
+do {
+  console.log(i);
+  i++;
+} while (i < 2);
+// OUTPUT: 0 1
+```
+for in iterates over object's property names. gets the index values for an array:
+```js
+const obj = { a: 1, b: 'fish' };
+for (const name in obj) {
+  console.log(name);
+}
+// OUTPUT: a
+// OUTPUT: b
+```
+for of iteratoes over property values:
+```js
+const arr = ['a', 'b'];
+for (const val of arr) {
+  console.log(val);
+}
+// OUTPUT: 'a'
+// OUTPUT: 'b'
+```
+Able to use "break" and "continue"
+
+## JS String
+Single and double quotes are equivalent, but ` backticks defines string literal that may contain JS that is evaluated in place and concatenated into the string. literal replacement specifier is declared by ${}.
+```js
+const l = 'literal';
+console.log(`string ${l + (1 + 1)} text`);
+// OUTPUT: string literal2 text
+```
+### Unicode Support
+Defines string as 16-bit unsigned integer representing UTF-16 strings. Allows it to represent most languages.
+### String functions
+| Function      | Meaning                                                      |
+| ------------- | ------------------------------------------------------------ |
+| length        | The number of characters in the string                       |
+| indexOf()     | The starting index of a given substring                      |
+| split()       | Split the string into an array on the given delimiter string |
+| startsWith()  | True if the string has a given prefix                        |
+| endsWith()    | True if the string has a given suffix                        |
+| toLowerCase() | Converts all characters to lowercase                         |
+
+## Functions
+1st class objects: can be passed as parameter, returned, and referenced from object or array.
+Functino begins w/ "function" keyword.
+### Parameters
+Caller may choose which parameters to provide. If a parameter isn't provided, it is "undefined" when functione executes.
+### Anonymous functions
+Functions are often assigned to var so they can be passed as parameter to some other function or stored as obj property.
+## JS Arrow Function
+Used to make code more compact. Basically a lambda with => placed after the parameter declaration. These 2 are equal:
+```js
+const a = [1, 2, 3, 4];
+
+// standard function syntax
+a.sort(function (v1, v2) {
+  return v1 - v2;
+});
+
+// arrow function syntax
+a.sort((v1, v2) => v1 - v2);
+```
+Can't be used for constructors or iterator generators.
+Return values are optional if no curly brackets and only contains a single expression. If there are curly brackets, it behaves as a standard runction.
+Debounce function only executes a specified function once within a given time window.
+
+## JS Array
+Functions:
+| Function | Meaning                                                   | Example                       |
+| -------- | --------------------------------------------------------- | ----------------------------- |
+| push     | Add an item to the end of the array                       | `a.push(4)`                   |
+| pop      | Remove an item from the end of the array                  | `x = a.pop()`                 |
+| slice    | Return a sub-array                                        | `a.slice(1,-1)`               |
+| sort     | Run a function to sort an array in place                  | `a.sort((a,b) => b-a)`        |
+| values   | Creates an iterator for use with a `for of` loop          | `for (i of a.values()) {...}` |
+| find     | Find the first item satisfied by a test function          | `a.find(i => i < 2)`          |
+| forEach  | Run a function on each array item                         | `a.forEach(console.log)`      |
+| reduce   | Run a function to reduce each array item to a single item | `a.reduce((a, c) => a + c)`   |
+| map      | Run a function to map an array to a new array             | `a.map(i => i+i)`             |
+| filter   | Run a function to remove items                            | `a.filter(i => i%2)`          |
+| every    | Run a function to test if all items match                 | `a.every(i => i < 3)`         |
+| some     | Run a function to test if any items match                 | `a.some(i => 1 < 1)`          |
+
