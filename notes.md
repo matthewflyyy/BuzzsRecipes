@@ -778,3 +778,114 @@ Functions:
 | every    | Run a function to test if all items match                 | `a.every(i => i < 3)`         |
 | some     | Run a function to test if any items match                 | `a.some(i => 1 < 1)`          |
 
+## JSON
+A simple way to share and store data. Easily convertible to and from JS objects.
+### Format
+Contains one of the following data types:
+| Type    | Example                 |
+| ------- | ----------------------- |
+| string  | "crockford"             |
+| number  | 42                      |
+| boolean | true                    |
+| array   | [null,42,"crockford"]   |
+| object  | {"a":1,"b":"crockford"} |
+| null    | null                    |
+
+Most common is an object. Key is a string and value is valid JSON data types. 
+Ex JSON document:
+```js
+{
+  "class": {
+    "title": "web programming",
+    "description": "Amazing"
+  },
+  "enrollment": ["Marco", "Jana", "فَاطِمَة"],
+  "start": "2025-02-01",
+  "end": null
+}
+```
+Always encoded w/ UTF-8.
+### Converting to JS
+Use JSON.parse and JSON.stringify functions.
+```js
+const obj = { a: 2, b: 'crockford', c: undefined };
+const json = JSON.stringify(obj);
+const objFromJson = JSON.parse(json);
+
+console.log(obj, json, objFromJson);
+
+// OUTPUT:
+// {a: 2, b: 'crockford', c: undefined}
+// {"a":2, "b":"crockford"}
+// {a: 2, b: 'crockford'}
+```
+JSON can't represent JS undefined object so it gets dropped in conversion.
+
+## JS Regular Expressions
+Textual pattern matchers. Can be using class constructor or regular expression literal:
+```js
+const objRegex = new RegExp('ab*', 'i');
+const literalRegex = /ab*/i;
+```
+string functions that accept regular expressions: match, replace, search and split. Test function sees if there's a match
+```js
+const petRegex = /(dog)|(cat)|(bird)/gim;
+const text = 'Both cats and dogs are pets, but not rocks.';
+
+text.match(petRegex);
+// RETURNS: ['cat', 'dog']
+
+text.replace(petRegex, 'animal');
+// RETURNS: Both animals and animals are pets, but not rocks.
+
+petRegex.test(text);
+// RETURNS: true
+```
+## JS rest and spread
+### Rest
+If we want a function to take unknown # of parameters, we use rest syntax. To turn las parameter of function into "rest" parameter, prefix it w/ 3 periods. Then, any number of parameters are automatically combined into an array:
+```js
+function hasNumber(test, ...numbers) {
+  return numbers.some((i) => i === test);
+}
+
+hasNumber(2, 1, 2, 3);
+// RETURNS: true
+```
+### Spread
+Spread does opposite of rest. Takes object that is iterable (array, string, etc.) and expands it into function's parameters:
+```js
+function person(firstName, lastName) {
+  return { first: firstName, last: lastName };
+}
+
+const p = person(...['Ryan', 'Dahl']);
+console.log(p);
+// OUTPUT: {first: 'Ryan', last: 'Dahl'}
+```
+## JS Exceptions
+Supports try catch and throw syntax. Can also specify a finally block that is always called wether or not an exception was thrown:
+```js
+try {
+  // normal execution code
+} catch (err) {
+  // exception handling code
+} finally {
+  // always called code
+}
+```
+Try to restrict exceptions to truly exceptional situations such as running when a file isn't found that's necessary to run the code.
+### Fallbacks
+Often implemented using exception handling. Allows you to always return something, even if the desired feature is temporarily unavailable.
+```js
+function getScores() {
+  try {
+    const scores = scoringService.getScores();
+    // store the scores so that we can use them later if the network is not available
+    window.localStorage.setItem('scores', scores);
+    return scores;
+  } catch {
+    return window.localStorage.getItem('scores');
+  }
+}
+```
