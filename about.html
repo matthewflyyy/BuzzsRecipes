@@ -7,6 +7,7 @@
     <title>Buzz's Recipes</title>
     <link rel="icon" href="favicon.ico" /> <!-- creates the icon that goes on the tab-->
     <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="about.css" />
   </head>
   <body>
     <!-- Use header, main, and footer elements to give semantic structure -->
@@ -20,7 +21,7 @@
           <li><a href="index.html">Home</a></li>
           <li>
             <div class="dropdown">
-                <a class="dropbtn">Recipes</a>
+                <a class="dropbtn" href="recipes.html">Recipes</a>
                 <div id="myDropdown" class="dropdown-content">
                 <a href="recipes.html">All</a>
                 <a href="breakfast.html">Breakfast</a>
@@ -30,7 +31,6 @@
             </div>
           </li>
           <li><a href="login.html">Log In</a></li>
-          <li><a href="about.html">About</a></li>
           <li><a href="myaccount.html">My Account</a></li>
         </menu>
       </nav>
@@ -38,7 +38,10 @@
     </header>
 
     <main>
-      <h1>About Buzz's Recipes</h1>
+      <div class="about-us">
+        <h1>About Us</h1>
+      </div>
+      <div class="about-info">
       <p>Buzz's Recipes is a site meant to make cooking more efficient and easier. Often we can spend more time looking for a recipe and deciding what to cook than we actually do cooking. Buzz's Recipe is here to help cut down that time. Features include:</p>
       <ul>
         <li>Browsing recipes by category</li>
@@ -46,7 +49,8 @@
         <li>Sharing recipes with your friends</li>
         <li>Saving recipes to your own account for easy access later</li>
       </ul>
-      <p>Please have patience as we continue to develop the site. We will slowly be rolling out all features and be making the interface more accessible. Please contact us with any questions.</p>
+      </div>
+      <p class="patience">*Please have patience as we continue to develop the site. We will slowly be rolling out all features and be making the interface more accessible. Please contact us with any questions.*</p>
     </main>
 
     <footer>

@@ -1,3 +1,5 @@
+/* Maybe add in a search bar */
+
 body {
     display: flex;
     flex-direction: column;
@@ -13,6 +15,7 @@ body {
     background-color: white;
     padding-bottom: 10px
   }
+  /* Maybe make the title a link to the home page */
   header h1{
     margin-left: 35px;
   }
@@ -116,8 +119,9 @@ main {
 }
 
 table, th, td{
+    font-size: 2vw;
     border: 1px solid;
-    background: white;
+    background: lightgray;
 }
 table{
     margin-top: 10px;
