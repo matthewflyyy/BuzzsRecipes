@@ -10,14 +10,3 @@ main {
 main h1{
     font-size: 6vw;
 }
-
-.recipe {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    margin-left: 10vw;
-    margin-right: 10vw;
-    width: 70vw;
-    padding: 5vw;
-    background-color: white;
-}

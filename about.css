@@ -24,6 +24,7 @@ main {
     font-size: 9vw;
 }
 .about-info {
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
     margin-left: 5vw;
