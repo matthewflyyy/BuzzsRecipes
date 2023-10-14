@@ -43,3 +43,12 @@ For this deliverable, I created the outline of my website using HTML.
 - **Database** - The recipes on the site (including the saved recipes on the myaccount page) represent data pulled from the database.
 - **WebSocket** - The message "*Brooklynn just sent you a recipe*" on the myaccount page represents a realtime message of a recipe sent to you from another user.
 
+# CSS Deliverable
+For this deliverable, I utilized CSS to properly style my application.
+- **Header, Footer and Main content body**
+- **Navigation Elements** - I dropped the underlines and color change once the link has been visited. I also styled them so they look like buttons to be easily recognized by the user.
+- **Responsive to window resizing** - I ensured that the application looks good at all window sizes, especializing on a mobile device.
+- **Application Elements** - I put in contrast and I used my whitespace well. I also made all the elements easy to find for the user.
+- **Application text content** - There is a consistent use of font.
+- **Application Images** - I made a couple images background images overlayed with text. I also properly placed and sized the recipe pictures.
+

@@ -20,14 +20,3 @@
 .top-right:hover{
     background-color: darkgray;
 }
-
-h1{
-    display: box;
-    position: -webkit-sticky;
-    position: sticky;
-    float: left;
-    top: 10px;
-    width: max-content;
-    margin-right: auto;
-    margin-left: 15px;
-}
