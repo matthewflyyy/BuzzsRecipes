@@ -1,0 +1,67 @@
+/* Button in top right corner */
+.top-left{
+    display: box;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 10px;
+    width:max-content;
+    margin-right: auto;
+    margin-left: 10px;
+    background-color: #363537;
+    color: white;
+    padding: 10px;
+    border: solid thin darkgray;
+    border-radius: 5px;
+}
+
+main{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.top-left:link, .top-left:visited{
+    text-decoration: none;
+}
+
+.top-left:hover{
+    background-color: darkgray;
+}
+
+.add-recipe{
+    display: flex;
+    padding: 5vw;
+    align-items: center;
+    justify-content: center;
+    width: 60vw;
+    background-color: white;
+}
+
+.add-recipe input{
+    display: flex;
+    margin-bottom: 5px;
+    width: 40vw;
+}
+
+
+/* https://codepen.io/MasterWebDevelopment/pen/emNpMq */
+/* Codepen to add more text inputs once JS is implemented */
+
+.side-by-side{
+    display: flex;
+    width: 10em;
+
+}
+
+.add-step{
+    display: flex;
+    background-color: #363537;
+    color: white;
+    padding: 10px;
+    border: solid thin darkgray;
+    border-radius: 5px;
+    margin: 5px;
+    margin-left: 0px;
+    width:95%;
+    height: 15px;
+    font-size: 1em;
+}

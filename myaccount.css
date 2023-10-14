@@ -1,0 +1,22 @@
+/* Button in top right corner */
+.top-right{
+    display: box;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 10px;
+    width:max-content;
+    margin-left: auto;
+    margin-right: 10px;
+    background-color: #363537;
+    color: white;
+    padding: 10px;
+    border: solid thin darkgray;
+    border-radius: 5px;
+}
+.top-right:link, .top-right:visited{
+    text-decoration: none;
+}
+
+.top-right:hover{
+    background-color: darkgray;
+}
