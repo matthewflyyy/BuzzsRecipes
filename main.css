@@ -147,3 +147,7 @@ th, td{
     padding: 5vw;
     background-color: white;
 }
+
+.recipe h3{
+    font-size: 3vw;
+}
