@@ -889,3 +889,202 @@ function getScores() {
   }
 }
 ```
+
+## JS destructuring
+Process of pulling idividual items out of existing one (or removing structure). Example:
+```js
+const a = [1, 2, 4, 5];
+
+// destructure the first two items from a, into the new variables b and c
+const [b, c] = a;
+
+console.log(b, c);
+// OUTPUT: 1, 2
+```
+Can combine multiple items from the original object using rest syntax:
+```js
+const [b, c, ...others] = a;
+
+console.log(b, c, others);
+// OUTPUT: 1, 2, [4,5]
+```
+When destructuring objects, explicity specify properties you want to pull from source object:
+```js
+const o = { a: 1, b: 'animals', c: ['fish', 'cats'] };
+
+const { a, c } = o;
+
+console.log(a, c);
+// OUTPUT 1, ['fish', 'cats']
+```
+Can map names to new variables:
+```js
+const o = { a: 1, b: 'animals', c: ['fish', 'cats'] };
+
+const { a: count, b: type } = o;
+
+console.log(count, type);
+// OUTPUT 1, animals
+```
+Default values can be provided for missing ones:
+```js
+const { a, b = 22 } = {};
+const [c = 44] = [];
+
+console.log(a, b, c);
+// OUTPUT: undefined, 22, 44
+```
+Reassign existing values:
+```js
+let a = 22;
+
+[a] = [1, 2, 3];
+
+console.log(a);
+// OUTPUT: 1
+```
+
+## JS Object and classes
+JS obj represents collection of name value pairs called properties. Property name must be String/Symbol, value can be anything. Have constructors, "this" pointer, static properties/functions, and inheritance. Properties can be referenced w/ dot (obj.prop) or brackets (obj['prop']).
+```js
+const obj = new Object({a:3});
+obj['b'] = 'fish';
+obj.c = [1, 2, 3];
+obj.hello = function () {
+  console.log('hello');
+};
+
+console.log(obj);
+// OUTPUT: {a: 3, b: 'fish', c: [1,2,3], hello: func}
+```
+### Object-literals
+Can declare variable of obj type w/ object-literal syntax. Allows you to provide initial composition of obj:
+```js
+const obj = {
+  a: 3,
+  b: 'fish',
+};
+```
+### Obj Functions
+Commonly used ones:
+| Function | Meaning                             |
+| -------- | ----------------------------------- |
+| entries  | Returns an array of key value pairs |
+| keys     | Returns an array of keys            |
+| values   | Returns an array of values          |
+```js
+const obj = {
+  a: 3,
+  b: 'fish',
+};
+
+console.log(Object.entries(obj));
+// OUTPUT: [['a', 3], ['b', 'fish']]
+console.log(Object.keys(obj));
+// OUTPUT: ['a', 'b']
+console.log(Object.values(obj));
+// OUTPUT: [3, 'fish']
+```
+### Constructor
+Invoked w/ "new" operator:
+```js
+function Person(name) {
+  return {
+    name: name,
+  };
+}
+
+const p = new Person('Eich');
+console.log(p);
+// OUTPUT: {name: 'Eich'}
+```
+Can create methods on obj as part of its encapsulation:
+```js
+function Person(name) {
+  return {
+    name: name,
+    log: function () {
+      console.log('My name is ' + this.name);
+    },
+  };
+}
+
+const p = new Person('Eich');
+p.log();
+// OUTPUT: My name is Eich
+```
+### Classes
+Used to define objects. Person obj above would look like this when converted to a class:
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  log() {
+    console.log('My name is ' + this.name);
+  }
+}
+
+const p = new Person('Eich');
+p.log();
+// OUTPUT: My name is Eich
+```
+Make properties/functions private by prefixing them with a #.
+### Inheritance
+Classes can be extended using "extends" keyword to define inheritance. Parameters passed to parent class are delivered using "super" function. Functions w/ same name as parent override the parent function. Parent function used explicity using "super" keyword:
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  print() {
+    return 'My name is ' + this.name;
+  }
+}
+
+class Employee extends Person {
+  constructor(name, position) {
+    super(name);
+    this.position = position;
+  }
+
+  print() {
+    return super.print() + '. I am a ' + this.position;
+  }
+}
+
+const e = new Employee('Eich', 'programmer');
+console.log(e.print());
+// OUTPUT: My name is Eich. I am a programmer
+```
+
+## Scope
+Scope is defined as the variables that're visible in the current context of exectution. JS has 4 types of scope:
+1. Global - Visible to all code
+2. Module - Visible to all code running in a module
+3. Function - Visible within a function
+4. Block - Visible within a block of code delimited by curly braces
+### VAR
+When var is used to declare a variable, it ignores block scope. Automatically brought to top of the function. 
+### This
+Represents variable that points to obj. Automatically declared and can be accessed anywhere in JS program. 3 different context this can refer to:
+1. Global - When this is referenced outside a func or obj, refers to "globalThis" obj. Represents context for runtime environment.
+2. Function - When this is referenced in a cun, refers to obj that owns the func. 
+3. Object - When this is referenced in obj refers to the obj.
+### Closure
+Defined as a function and its surrounding state. That means whatever variables are accessible when a func is created are available inside of that func. 
+```js
+globalThis.x = 'global';
+
+const obj = {
+  x: 'object',
+  f: function () {
+    console.log(this.x);
+  },
+};
+
+obj.f();
+// OUTPUT: object
+```

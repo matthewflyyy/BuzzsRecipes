@@ -10,11 +10,11 @@ main{
 }
 
 main h1{
-    font-size: 80px;
+    font-size: 8vw;
     color: white;
 }
 
 main p{
-    font-size: 40px;
+    font-size: 4vw;
     color: white;
 }
