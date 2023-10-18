@@ -1088,3 +1088,56 @@ const obj = {
 obj.f();
 // OUTPUT: object
 ```
+Arrow functions inherit pointer of their creation context.
+```js
+globalThis.x = 'global';
+
+const obj = {
+  x: 'object',
+  f: () => console.log(this.x),
+};
+
+obj.f();
+// OUTPUT: global
+```
+But when it is made inside the context of the obj:
+```js
+globalThis.x = 'global';
+
+const obj = {
+  x: 'object',
+  make: function () {
+    return () => console.log(this.x);
+  },
+};
+
+const f = obj.make();
+f();
+// OUTPUT: object
+```
+
+## JS Modules
+Allow for partitioning and sharing of code. Node.js modules are called CommonJS modules. JS modules are called ES modules. We're focusing only on ES modules.
+Must explicitly export obj from one file and import to other. 
+alert.js
+```js
+export function alertDisplay(msg) {
+  alert(msg);
+}
+```
+main.js
+```js
+import { alertDisplay } from './alert.js';
+
+alertDisplay('called from main.js');
+```
+### ES Modules in the browser
+Cannot access JS contained in module from global scope that your non-module JS is executing in.
+From HTML, can specify use of ES module by including "type" attribute w/ value of "module" in "script" element. Then can import and use other modules.
+index.html
+```html
+<script type="module">
+  import { alertDisplay } from './alert.js';
+  alertDisplay('module loaded');
+</script>
+```
