@@ -1141,3 +1141,94 @@ index.html
   alertDisplay('module loaded');
 </script>
 ```
+If we want to use module in global scope that HTML or other non-module JS is executing in, must leak it into global scope by attaching it to event handler or explicitly adding it to a function, to global window obj. 
+index.html
+```js
+<html>
+  <body>
+    <script type="module">
+      import { alertDisplay } from './alert.js';
+      window.btnClick = alertDisplay;
+
+      document.body.addEventListener('keypress', function (event) {
+        alertDisplay('Key pressed');
+      });
+    </script>
+    <button onclick="btnClick('button clicked')">Press me</button>
+  </body>
+</html>
+```
+### Modules with web frameworks
+Generally don't have to worry abt differentiating between global scope and ES module scope when using web framework bundler
+
+## Document Object Model
+DOM is an obj representation of HTML elements that browser uses to render display. Allows you to write programs that dynamically manipulate the HTML.
+Browser provides access to DOM thru global variable "document".
+### Accessing the DOM
+Every element in HTML doc implements the DOM Element interface, derived from DOM Node interface. Provides means for iterating child elements, accessing parent element and manipulating element's attributes. In JS, start w/ "document" var and wakl thru each element in the tree.
+```js
+function displayElement(el) {
+  console.log(el.tagName);
+  for (const child of el.children) {
+    displayElement(child);
+  }
+}
+
+displayElement(document);
+```
+Can procide CSS selector to "querySelectorAll" func in order to select elements from doc. "textContent" property contains all of element's text. Can access text representation of element's HTML content w/ "innerHTML" property.
+```js
+const listElements = document.querySelectorAll('p');
+for (const el of listElements) {
+  console.log(el.textContent);
+}
+```
+### Modifying the DOM
+Can insert, modify or delete elements in DOM. Add element:
+```js
+function insertChild(parentSelector, text) {
+  const newChild = document.createElement('div');
+  newChild.textContent = text;
+
+  const parentElement = document.querySelector(parentSelector);
+  parentElement.appendChild(newChild);
+}
+
+insertChild('#courses', 'new course');
+```
+Delete elements w/ "removeChild" func:
+```js
+function deleteElement(elementSelector) {
+  const el = document.querySelector(elementSelector);
+  el.parentElement.removeChild(el);
+}
+
+deleteElement('#courses div');
+```
+### Injecting HTML
+Can inject entire blocks of HTML into an element. This code finds 1st "div" and replaces it w/ all HTML it contains:
+```js
+const el = document.querySelector('div');
+el.innerHTML = '<div class="injected"><b>Hello</b>!</div>';
+```
+Make sure injected HTML can't be manipulated by user.
+### Event Listeners
+Can attach a func that gets called when an event occurs in the element. Called "event listeners". Here's one when the element's clicked:
+```js
+const submitDataEl = document.querySelector('#submitData');
+submitDataEl.addEventListener('click', function (event) {
+  console.log(event.type);
+});
+```
+Some commonly used events:
+| Event Category | Description           |
+| -------------- | --------------------- |
+| Clipboard      | Cut, copied, pasted   |
+| Focus          | An element gets focus |
+| Keyboard       | Keys are pressed      |
+| Mouse          | Click events          |
+| Text selection | When text is selected |
+Can be added directly to HTML:
+```html
+<button onclick='alert("clicked")'>click me</button>
+```
