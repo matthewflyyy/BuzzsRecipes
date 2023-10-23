@@ -1232,3 +1232,212 @@ Can be added directly to HTML:
 ```html
 <button onclick='alert("clicked")'>click me</button>
 ```
+
+## Local Storage
+localStorage api in browser provides ability to store and retrieve data (scores, usernames, etc.) on user's browser across sessions and HTML page renderings. Also cache for when data can't be obtained from server.
+
+### How to use LocalStorage
+4 main functions:
+| Function             | Meaning                                      |
+| -------------------- | -------------------------------------------- |
+| setItem(name, value) | Sets a named item's value into local storage |
+| getItem(name)        | Gets a named item's value from local storage |
+| removeItem(name)     | Removes a named item from local storage      |
+| clear()              | Clears all items in local storage            |
+Value must be type string, number or boolean.
+
+Ex:
+```js
+let user = 'Alice';
+
+let myObject = {
+  name: 'Bob',
+  info: {
+    favoriteClass: 'CS 260',
+    likesCS: true,
+  },
+};
+
+let myArray = [1, 'One', true];
+
+localStorage.setItem('user', user);
+localStorage.setItem('object', JSON.stringify(myObject));
+localStorage.setItem('array', JSON.stringify(myArray));
+
+console.log(localStorage.getItem('user'));
+console.log(JSON.parse(localStorage.getItem('object')));
+console.log(JSON.parse(localStorage.getItem('array')));
+```
+## Promises
+In JS, only 1 piece of code executes at a time. Can asynchronously execute code w/ use of JS Promise. Promise obj can be in 1 of 3 states:
+1. pending - currently running asynchronously
+2. fulfilled - completed successfully
+3. rejected - failed to complte
+Ex:
+```js
+const delay = (msg, wait) => {
+  setTimeout(() => {
+    console.log(msg, wait);
+  }, 1000 * wait);
+};
+
+new Promise((resolve, reject) => {
+  // Code executing in the promise
+  for (let i = 0; i < 3; i++) {
+    delay('In promise', i);
+  }
+});
+
+// Code executing after the promise
+for (let i = 0; i < 3; i++) {
+  delay('After promise', i);
+}
+
+// OUTPUT:
+//   In promise 0
+//   After promise 0
+//   In promise 1
+//   After promise 1
+//   In promise 2
+//   After promise 2
+```
+### Resolving and rejecting
+Must set state to fulfilled or rejected once done. Promise executor func takes 2 funcs as parameters, resolve and reject. Resolve sets to fulfilled state while reject sets to rejected state.
+"coin toss" waits 10 sec then has 50% chance of resolving/rejecting:
+```js
+const coinToss = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (Math.random() > 0.5) {
+      resolve('success');
+    } else {
+      reject('error');
+    }
+  }, 10000);
+});
+```
+Logging promise to console right after calling it:
+```js
+console.log(coinToss);
+// OUTPUT: Promise {<pending>}
+```
+Wait 10 sec will be fulfilled or rejected:
+```js
+console.log(coinToss);
+// OUTPUT: Promise {<fulfilled>}
+```
+### Then, catch, finally
+We must do something w/ result of promise. Promsie has 3 funcs: then, catch and finally. Then is called if promise is fulfilled. Catch called if rejected. Finally called after all processing is completed.
+```js
+const coinToss = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (Math.random() > 0.1) {
+      resolve(Math.random() > 0.5 ? 'heads' : 'tails');
+    } else {
+      reject('fell off table');
+    }
+  }, 10000);
+});
+
+coinToss
+  .then((result) => console.log(`Coin toss result: ${result}`))
+  .catch((err) => console.log(`Error: ${err}`))
+  .finally(() => console.log('Toss completed'));
+
+// OUTPUT:
+//    Coin toss result: tails
+//    Toss completed
+```
+### The observer pattern
+"Observer" pattern can run things asynchronously in JS. Observers can be reused, and result of executing an Observable can be saved as history of a particular execution.
+
+## JS Async/await
+Makes a more concise representation of prosmises. "await" wraps execution of promise and removed need to chain functions. Will block until promise is fulfilled or throw exception if rejected. Coin toss promise:
+```js
+const coinToss = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (Math.random() > 0.1) {
+        resolve(Math.random() > 0.5 ? 'heads' : 'tails');
+      } else {
+        reject('fell off table');
+      }
+    }, 1000);
+  });
+};
+```
+Can create equivalent execution w/ then/catch or w/ await w/ try/catch block:
+then/catch chain version:
+```js
+coinToss()
+  .then((result) => console.log(`Toss result ${result}`))
+  .catch((err) => console.error(`Error: ${err}`))
+  .finally(() => console.log(`Toss completed`));
+```
+async, try/catch:
+```js
+try {
+  const result = await coinToss();
+  console.log(`Toss result ${result}`);
+} catch (err) {
+  console.error(`Error: ${err}`);
+} finally {
+  console.log(`Toss completed`);
+}
+```
+### async
+Can't vall await unless it's called at top level of JS, or is in func that's defined w/ async keyword. 
+```js
+function cow() {
+  return 'moo';
+}
+console.log(cow());
+// OUTPUT: moo
+```
+Now designated as asynchronous:
+```js
+async function cow() {
+  return 'moo';
+}
+console.log(cow());
+// OUTPUT: Promise {<fulfilled>: 'moo'}
+```
+Explicitly create a promise
+```js
+async function cow() {
+  return new Promise((resolve) => {
+    resolve('moo');
+  });
+}
+console.log(cow());
+// OUTPUT: Promise {<pending>}
+```
+### await
+Declares that a func returns a promise. Wraps a call to asyn func, blocks execution until resolves and returns reult of promise.
+Let's us return result of promise instead of actual promise obj:
+```js
+console.log(cow());
+// OUTPUT: Promise {<pending>}
+
+console.log(await cow());
+// OUTPUT: moo
+```
+Promise:
+```js
+const httpPromise = fetch('https://simon.cs260.click/api/user/me');
+const jsonPromise = httpPromise.then((r) => r.json());
+jsonPromise.then((j) => console.log(j));
+console.log('done');
+
+// OUTPUT: done
+// OUTPUT: {email: 'bud@mail.com', authenticated: true}
+```
+async/await:
+```js
+const httpResponse = await fetch('https://simon.cs260.click/api/user/me');
+const jsonResponse = await httpResponse.json();
+console.log(jsonResponse));
+console.log('done');
+
+// OUTPUT: {email: 'bud@mail.com', authenticated: true}
+// OUTPUT: done
+```
