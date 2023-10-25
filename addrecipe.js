@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded", function() {
       // Create a new input field for the step
       const newStepInput = document.createElement("input");
       newStepInput.type = "text";
-    //   newStepInput.class = "directions";
       newStepInput.placeholder = "Step " + (stepContainer.querySelectorAll('.directions').length + 1);
+      newStepInput.className = "directions";
+
 
       // Append the new input field to the step container
       stepContainer.appendChild(newStepInput);
