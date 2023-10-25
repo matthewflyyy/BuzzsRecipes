@@ -67,3 +67,7 @@ main{
     height: 15px;
     font-size: 1em;
 }
+
+button.hidden { 
+    display: none; 
+}

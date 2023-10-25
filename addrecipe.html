@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Buzz's Recipes</title>
     <link rel="icon" href="favicon.ico" /> <!-- creates the icon that goes on the tab-->
+    <script src="addrecipe.js"></script>
     <link rel="stylesheet" href="main.css" />
     <link rel="stylesheet" href="addrecipe.css" />
   </head>
@@ -43,14 +44,16 @@
       <h2>Add your favorite recipes to share with all!</h2>
       <div class="add-recipe">
         <form method="get" action="myaccount.html">
+          <div class="recipeForm">
             <input type="text" id="recipe-name" placeholder="Recipe Name" />
             <input type="text" id="prep-time" placeholder="Preparation Time" />
             <input type="text" id="cook-time" placeholder="Cooking Time" />
             <input type="text" id="ingredients" placeholder="Ingredients" />
-            <input type="text" id="directions" placeholder="Step 1" />
-            <input type="text" id="directions" placeholder="Step 2" />
-            <input type="text" id="directions" placeholder="Step 3" />
-            <a href="#" class="add-step">+ Add Step</a>
+            <input type="text" class="directions" placeholder="Step 1" />
+            <input type="text" class="directions" placeholder="Step 2" />
+            <input type="text" class="directions" placeholder="Step 3" />
+          </div>
+            <a href="#" id="add-step-link" class="add-step">+ Add Step</a>
             <div class="side-by-side">
                 <button class="button" type="submit">Create</button>
             </div>
