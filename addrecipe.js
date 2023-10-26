@@ -21,3 +21,21 @@ document.addEventListener("DOMContentLoaded", function() {
       stepContainer.appendChild(newStepInput);
     });
   });
+
+  function addRecipe() {
+    const recipeData = {
+        name: document.getElementById('recipe-name').value,
+        prepTime: document.getElementById('prep-time').value,
+        cookTime: document.getElementById('cook-time').value,
+        ingedrients: document.getElementById('ingredients').value,
+        directions: [],
+    }
+    const directionsInputs = document.querySelectorAll('.directions');
+
+    directionsInputs.forEach((directionInput) => {
+        recipeData.directions.push(directionInput.value);
+    });
+
+    localStorage.setItem('recipe1', JSON.stringify(recipeData));
+    console.log(localStorage.getItem('recipe1'));
+  }

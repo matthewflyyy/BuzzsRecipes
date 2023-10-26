@@ -8,6 +8,7 @@
         <link rel="icon" href="favicon.ico" /> <!-- creates the icon that goes on the tab-->
         <link rel="stylesheet" href="main.css" />
         <link rel="stylesheet" href="createaccount.css" />
+        <script src="login.js"></script>
 
     </head>
     <body>
@@ -42,11 +43,14 @@
             <h1>Welcome!</h1>
             <h3>Create an account to save and share recipes!</h3>
             <form method="get" action="myaccount.html"> <!-- Creates the log in form and goes to play.html when you submit it-->
-            <p><input type="text" id="username" placeholder="Your username here" /></p>
-            <p><input type="text" id="password" placeholder="Your password here" /></p>
-            <p><input type="text" id="email" placeholder="example@email.com" /></p>
+            <p><label for="username">Username</label>
+                <input type="text" id="username" placeholder="Your username here" /></p>
+            <p><label for="password">Password</label>
+                <input type="text" id="password" placeholder="Your password here" /></p>
+            <p><label for="email">Email</label>
+                <input type="text" id="email" placeholder="example@email.com" /></p>
             <p>
-                <button class="button" type="submit">Create Account</button>
+                <button class="button" onclick="login()" type="submit">Create Account</button>
             </p>
             </form>
             <p>Already have an account? <a href="login.html">Log In Here</a></p>
