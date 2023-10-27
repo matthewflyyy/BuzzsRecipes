@@ -21,6 +21,28 @@ document.addEventListener("DOMContentLoaded", function() {
       // Append the new input field to the step container
       stepContainer.appendChild(newStepInput);
     });
+
+    const addIngredientLink = document.getElementById("add-ingredient-link");
+
+    // Select the container where you want to add the new step input fields
+    const ingredientContainer = document.querySelector(".ingredients");
+
+    // Add a click event listener to the "Add Step" link
+    addIngredientLink.addEventListener("click", function(event) {
+      event.preventDefault(); // Prevent the link from navigating
+
+      const parentElement = document.getElementById("#ingredients");
+      // Create a new input field for the step
+      const newIngredientInput = document.createElement("input");
+      newIngredientInput.type = "text";
+      newIngredientInput.placeholder = "Ingredient ";
+      newIngredientInput.className = "ingredient";
+
+
+      // Append the new input field to the step container
+      ingredientContainer.appendChild(newIngredientInput);
+    });
+
   });
 
   function addRecipe() {
