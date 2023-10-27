@@ -53,14 +53,19 @@ document.addEventListener("DOMContentLoaded", function() {
         prepTime: document.getElementById('prep-time').value,
         cookTime: document.getElementById('cook-time').value,
         amountMade: document.getElementById('amount-made').value,
-        ingredients: document.getElementById('ingredients').value,
+        ingredients: [],
         directions: [],
     }
     const directionsInputs = document.querySelectorAll('.directions');
+    const ingredientsInputs = document.querySelectorAll('.ingredient');
 
     directionsInputs.forEach((directionInput) => {
         recipeData.directions.push(directionInput.value);
     });
+
+    ingredientsInputs.forEach((ingredientsInput) => {
+        recipeData.ingredients.push(ingredientsInput.value);
+    })
 
     // if (selectedImage) {
     //     console.log("Selected image: ", selectedImage);

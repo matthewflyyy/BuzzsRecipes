@@ -19,7 +19,7 @@ function addRecipeToPage(recipeData){
         </table>
         <h4> Ingedrients </h4>
             <ul>
-                <li>${recipeData.ingredients}</li>
+                ${recipeData.ingredients.map((ingredient) => `<li>${ingredient}</li>`).join('')}
             </ul>
         <h4> Preparation and cooking instructions </h4>
             <ol>
@@ -42,3 +42,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // ${recipeData.ingredients.map((ingredient) => `<li>${ingredient}</li>`).join('')}
 // This line is for ingredients once I make it into a list rather than a single element
+
+setInterval(() => {
+    const score = Math.floor(Math.random() * 3000);
+    const chatText = document.querySelector('#player-messages');
+    chatText.innerHTML =
+      `<div class="event"><span class="player-event">Brooklynn</span> posted a recipe: " "` + chatText.innerHTML;
+  }, 5000);
