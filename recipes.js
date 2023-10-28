@@ -2,6 +2,7 @@
 
 function addRecipeToPage(recipeData){
     const newRecipeHTML = `
+        <p>
         <div class="recipe">
         <h3>${recipeData.name}</h3>
         <!-- <img src="${recipeData.image}" alt="${recipeData.name}" width="200"> -->
@@ -26,16 +27,19 @@ function addRecipeToPage(recipeData){
                 ${recipeData.directions.map((step) => `<li>${step}</li>`).join('')}
             </ol>
         </div>
+        </p>
     `;
 
     const recipeContainer = document.getElementById("recipe-container");
     recipeContainer.innerHTML += newRecipeHTML;
 }
 
-const recipeData = JSON.parse(localStorage.getItem('recipe1'));
+const recipeList = JSON.parse(localStorage.getItem('recipes'));
 document.addEventListener("DOMContentLoaded", function() {
-    if (recipeData){
-        addRecipeToPage(recipeData);
+    if (recipeList){
+        recipeList.forEach((recipeData) => {
+            addRecipeToPage(recipeData);
+        })
     }
 });
 // Add the recipes to a list in the local storage to have access to all of them

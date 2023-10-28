@@ -45,6 +45,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
   });
 
+let recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+
   function addRecipe() {
 
     const recipeData = {
@@ -71,6 +73,8 @@ document.addEventListener("DOMContentLoaded", function() {
     //     console.log("Selected image: ", selectedImage);
     // }
 
-    localStorage.setItem('recipe1', JSON.stringify(recipeData));
-    console.log(localStorage.getItem('recipe1'));
+    recipes.push(recipeData);
+
+    localStorage.setItem('recipes', JSON.stringify(recipes));
+    console.log(localStorage.getItem('recipes'));
   }

@@ -52,3 +52,10 @@ For this deliverable, I utilized CSS to properly style my application.
 - **Application text content** - There is a consistent use of font.
 - **Application Images** - I made a couple images background images overlayed with text. I also properly placed and sized the recipe pictures.
 
+# JavaScript Deliverable
+For this deliverable I implemented by JavaScript so that the application works for a single user. I also added placeholders for future technology.
+- **Login** - When you Press login or create an account it takes you to the My Account page where your username is displayed at the top.
+- **Database** - The username is stored and retrieved in local storage. Also, when you add a new recipe (which you get to from the My Account page), that recipe is stored in local storage and then displayed in the All Recipes page.
+- **WebSocket** - On the All Recipes page, a "user" periodically adds a new recipe at the top-left corner. This will be replaced with WebSocket messages later.
+- **Application Logic** - When you are creating a recipe, there is a button to add ingredients and add more steps to your recipe. Those ingredients and instructions are then displayed on the recipe page with the instructions in numerical order.
+
