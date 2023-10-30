@@ -29,6 +29,38 @@ dig (url) gives you the ip address of a website
 
 The local host ip address is 127.0.0.1 is just to access your own local machine
 
+# Console commands
+- chmod: Stands for "change mode." It's used to change the permissions of files and directories in Unix-based systems. You can specify who can read, write, and execute a file or directory.
+-  pwd: Stands for "print working directory." It displays the current directory path.
+- cd: Stands for "change directory." It's used to navigate between directories. You provide the path of the directory you want to change to.
+- ls: Stands for "list." It's used to list the contents of a directory, such as files and subdirectories. When you combine -la, you get a long format listing that includes hidden files and directories. This is a useful way to see a comprehensive view of the contents of a directory, including hidden configuration files and directories that are often important for system configuration and customization.
+- vim: A text editor in the console. It's known for its powerful features and is often used for code editing.
+- nano: Another text editor for the console, but it's simpler and more user-friendly compared to vim.
+- mkdir: Stands for "make directory." It's used to create new directories or folders.
+- mv: Stands for "move." It's used to move or rename files and directories.
+- rm: Stands for "remove." It's used to delete files and directories. Be careful, as it permanently deletes files.
+- man: Stands for "manual." It's used to display the manual or documentation for various commands and programs.
+- ssh: Stands for "secure shell." It's used for secure remote access to a server or computer over a network. can be used to create a remote shell session. "ssh user@192.168.1.100"
+- ps: Stands for "process status." It's used to list currently running processes on a Unix-based system.
+- wget: A command-line utility for downloading files from the internet, typically via HTTP or FTP.
+- sudo: Stands for "superuser do." It's used to run a command with elevated privileges, typically as a superuser or administrator.
+
+# Domain names
+![Domain name parts](https://github.com/webprogramming260/.github/raw/main/profile/webServers/domainNames/domainNameParts.jpg)
+- Top Level Domain (TLD) - .com, .edu, .click
+- Root domain - cs260.click, byu.edu
+- subdomain - travel (travel.cs260.click), blog (blog.cs260.click)
+
+A web certificate is necessary to use HTTPS.
+A DNS A record can point to an IP address, but not directly to another A recor
+
+## Ports
+- Port 443: Used for HTTPS (Hypertext Transfer Protocol Secure)
+- Port 80: Used for HTTP (unencrypted)
+- Port 22: Used for SSH (Secure Shell) protocol
+
+
+
 # HTML
 ## Hyperlink
 ```html
@@ -70,6 +102,13 @@ The local host ip address is 127.0.0.1 is just to access your own local machine
 | `video`   | Video content                                                          |
 | `svg`     | Scalable vector graphic content                                        |
 | `iframe`  | Inline frame of another HTML page                                      |
+
+HTML defines a header (<!DOCTYPE html>) that tells the browser the type and version of the document.
+
+## Images 
+```html
+<img alt="mountain landscape" src="https://images.pexels.com/photos/164170/pexels-photo-164170.jpeg" />
+```
 
 # CSS
 ## Intro
@@ -728,6 +767,16 @@ Supports if, else, and if else. Includes compact if else (ternary operator):
 a === 1 ? console.log(1) : console.log('not 1');
 ```
 Uses && || and !
+if:
+```js
+if (a === 1) {
+  //...
+} else if (b === 2) {
+  //...
+} else {
+  //...
+}
+```
 
 ### Loops
 Suppors for (let i = 0; i < 2; i++), for in, for of, while, do while and switch:
@@ -759,6 +808,20 @@ for (const val of arr) {
 // OUTPUT: 'b'
 ```
 Able to use "break" and "continue"
+switch:
+```js
+switch (expression) {
+  case value1:
+    // Code to be executed if expression === value1
+    break;
+  case value2:
+    // Code to be executed if expression === value2
+    break;
+  // More cases can be added as needed
+  default:
+    // Code to be executed if expression doesn't match any case
+}
+```
 
 ## JS String
 Single and double quotes are equivalent, but ` backticks defines string literal that may contain JS that is evaluated in place and concatenated into the string. literal replacement specifier is declared by ${}.
@@ -987,7 +1050,7 @@ console.log(a);
 ```
 
 ## JS Object and classes
-JS obj represents collection of name value pairs called properties. Property name must be String/Symbol, value can be anything. Have constructors, "this" pointer, static properties/functions, and inheritance. Properties can be referenced w/ dot (obj.prop) or brackets (obj['prop']).
+JS obj represents collection of name value pairs called properties. Property name must be String/Symbol, value can be anything. Have constructors, "this" pointer, static properties/functions, and inheritance. Properties can be referenced w/ dot (obj.prop) or brackets (obj['prop']). Can add new properties w/ js.
 ```js
 const obj = new Object({a:3});
 obj['b'] = 'fish';
@@ -1482,4 +1545,14 @@ console.log('done');
 
 // OUTPUT: {email: 'bud@mail.com', authenticated: true}
 // OUTPUT: done
+```
+
+### Changing CSS contents w/ JS
+Changing the text color of an element w/ id of "byu" to green:
+```js
+// Select the element with the id "byu"
+var element = document.getElementById("byu");
+
+// Change the text color to green
+element.style.color = "green";
 ```
