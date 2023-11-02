@@ -1556,3 +1556,375 @@ var element = document.getElementById("byu");
 // Change the text color to green
 element.style.color = "green";
 ```
+
+# Web Services
+## Introduction
+From our frontend JS we can make requests to a web service by using the fetch function that's built into the browser. Our web service will provde static frontend files w/ functions to handle fetch requests for things like sotring data persistently, providing security, running tasks, executing application logic that you don't want your user to be able to see, and communicating with other users. This is the "backend" of your app.
+Functions provided by a web service are called "endpoints" or APIs. Access web service endpoints from frontend JS w/ fetch function. 
+Backend web service can use fetch to make requests to other web services.
+## URL
+Uniform Resource Locator (URL) represents location of a web resource. Could be anything temporary or permanent.
+Most parts of the url are optional. The only required ones are the scheme and the domain name:
+```html
+https://byu.edu:443/cs/260/student?filter=accepted#summary
+<scheme>://<domain name>:<port>/<path>?<parameters>#<anchor>
+```
+| Part        | Example                              | Meaning                                                                                                                                                                                                                                                                             |
+| ----------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Scheme      | https                                | The protocol required to ask for the resource. For web applications, this is usually HTTPS. But it could be any internet protocol such as FTP or MAILTO.                                                                                                                            |
+| Domain name | byu.edu                              | The domain name that owns the resource represented by the URL.                                                                                                                                                                                                                      |
+| Port        | 3000                                 | The port specifies the numbered network port used to connect to the domain server. Lower number ports are reserved for common internet protocols, higher number ports can be used for any purpose. The default port is 80 if the scheme is HTTP, or 443 if the scheme is HTTPS.     |
+| Path        | /school/byu/user/8014                | The path to the resource on the domain. The resource does not have to physically be located on the file system with this path. It can be a logical path representing endpoint parameters, a database table, or an object schema.                                                    |
+| Parameters  | filter=names&highlight=intro,summary | The parameters represent a list of key value pairs. Usually it provides additional qualifiers on the resource represented by the path. This might be a filter on the returned resource or how to highlight the resource. The parameters are also sometimes called the query string. |
+| Anchor      | summary                              | The anchor usually represents a sub-location in the resource. For HTML pages this represents a request for the browser to automatically scroll to the element with an ID that matches the anchor. The anchor is also sometimes called the hash, or fragment ID.                     |
+### URL, URN, URI
+Uniform Resource Name (URN) is unique resource name that doesn't specify location info. Uniform Resource Identifier (URI) is a general resource indentifier that could refer to either a URL or URN.
+
+## Ports
+To connect to a device on the internet, you need both IP address and a numbered port. Port numbers allow a single device to support multiple protocals (http, https, ftp, SSH, etc.) and different types of services (search, document, authentication, etc.). Ports may be exposed externally or may only be used internally on device. 
+Ports from 0 to 1023 represent standard protocols. Ports from 1024 to 49151 represent ports assigned to requesting entities, but common for these to be used by services running internally on a device. Ports from 49152 to 65535 are considered dynamis and are used to create dynamic connections to a device. Common port numbers:
+| Port | Protocol                                                                                           |
+| ---- | -------------------------------------------------------------------------------------------------- |
+| 20   | File Transfer Protocol (FTP) for data transfer                                                     |
+| 22   | Secure Shell (SSH) for connecting to remote devices                                                |
+| 25   | Simple Mail Transfer Protocol (SMTP) for sending email                                             |
+| 53   | Domain Name System (DNS) for looking up IP addresses                                               |
+| 80   | Hypertext Transfer Protocol (HTTP) for web requests                                                |
+| 110  | Post Office Protocol (POP3) for retrieving email                                                   |
+| 123  | Network Time Protocol (NTP) for managing time                                                      |
+| 161  | Simple Network Management Protocol (SNMP) for managing network devices such as routers or printers |
+| 194  | Internet Relay Chat (IRC) for chatting                                                             |
+| 443  | HTTP Secure (HTTPS) for secure web requests                                                        |
+### Your ports
+When you built your web server, you internally exposed port 22 to use SSH to open a remove console on the server, port 443 for secure HTTP communication and port 80 for unsecure communication.
+## HTTP
+Hypertext Transfer Protocol (HTTP) is how the web talks. 
+When a web client (web browser) and web server talk, they exchange HTTP requests and responses. Can see this exchange by using browser's debugger or console tool like "curl":
+```sh
+curl -v -s http://info.cern.ch/hypertext/WWW/Helping.html
+```
+### Request
+HTTP request for above commant would like:
+```http
+GET /hypertext/WWW/Helping.html HTTP/1.1
+Host: info.cern.ch
+Accept: text/html
+```
+HTTP request has this general syntax:
+```http
+<verb> <url path, parameters, anchor> <version>
+[<header key: value>]*
+[
+
+  <body>
+]
+```
+First line contains "verb" of the request, followed by the path, parameters and anchor of URL, and finally the version of HTTP being used. Following lines are optional headers defined by key value pairs. After hearders there is optional body. Body starts is delimited from the headers w/ 2 new lines.
+In ex. above, we askt to GET a resource found at /hypertext/WWW/Helping.html path. Version used is HTTP/1.1. It's followed by 2 headers. First specifies the requested host (domain name). Second specifies type of resources client will accept. Resource type is always MME type. We are asking for HTML.
+
+### Response
+Response to above request is this:
+```http
+HTTP/1.1 200 OK
+Date: Tue, 06 Dec 2022 21:54:42 GMT
+Server: Apache
+Last-Modified: Thu, 29 Oct 1992 11:15:20 GMT
+ETag: "5f0-28f29422b8200"
+Accept-Ranges: bytes
+Content-Length: 1520
+Connection: close
+Content-Type: text/html
+
+<TITLE>Helping -- /WWW</TITLE>
+<NEXTID 7>
+<H1>How can I help?</H1>There are lots of ways you can help if you are interested in seeing
+the <A NAME=4 HREF=TheProject.html>web</A> grow and be even more useful...
+```
+Has following syntax:
+```http
+<version> <status code> <status string>
+[<header key: value>]*
+[
+
+  <body>
+]
+```
+First line represents the version and status of the response.
+### Verbs
+| Verb    | Meaning                                                                                                                                                                                                                                                  |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GET     | Get the requested resource. This can represent a request to get a single resource or a resource representing a list of resources.                                                                                                                        |
+| POST    | Create a new resource. The body of the request contains the resource. The response should include a unique ID of the newly created resource.                                                                                                             |
+| PUT     | Update a resource. Either the URL path, HTTP header, or body must contain the unique ID of the resource being updated. The body of the request should contain the updated resource. The body of the response may contain the resulting updated resource. |
+| DELETE  | Delete a resource. Either the URL path or HTTP header must contain the unique ID of the resource to delete.                                                                                                                                              |
+| OPTIONS | Get metadata about a resource. Usually only HTTP headers are returned. The resource itself is not returned.                                                                                                                                              |
+
+### Status Code
+It's important to use standard HTTP status codes in HTTP responses so client of request can know how to interpret response. Codes are partitioned into 5 blocks:
+- 1xx - informational
+- 2xx - Success
+- 3xx - Redirect to some other location, or that the previously catched resource is still valid
+- 4xx - Client errors. The request is invalid
+- 5xx - Server errors. The request cannot be satisfied due to an error on the server.
+Common codes:
+| Code | Text                                                                                 | Meaning                                                                                                                           |
+| ---- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| 100  | Continue                                                                             | The service is working on the request                                                                                             |
+| 200  | Success                                                                              | The requested resource was found and returned as appropriate.                                                                     |
+| 201  | Created                                                                              | The request was successful and a new resource was created.                                                                        |
+| 204  | No Content                                                                           | The request was successful but no resource is returned.                                                                           |
+| 304  | Not Modified                                                                         | The cached version of the resource is still valid.                                                                                |
+| 307  | Permanent redirect                                                                   | The resource is no longer at the requested location. The new location is specified in the response location header.               |
+| 308  | Temporary redirect                                                                   | The resource is temporarily located at a different location. The temporary location is specified in the response location header. |
+| 400  | Bad request                                                                          | The request was malformed or invalid.                                                                                             |
+| 401  | Unauthorized                                                                         | The request did not provide a valid authentication token.                                                                         |
+| 403  | Forbidden                                                                            | The provided authentication token is not authorized for the resource.                                                             |
+| 404  | Not found                                                                            | An unknown resource was requested.                                                                                                |
+| 408  | Request timeout                                                                      | The request takes too long.                                                                                                       |
+| 409  | Conflict                                                                             | The provided resource represents an out of date version of the resource.                                                          |
+| 418  | [I'm a teapot](https://en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol) | The service refuses to brew coffee in a teapot.                                                                                   |
+| 429  | Too many requests                                                                    | The client is making too many requests in too short of a time period.                                                             |
+| 500  | Internal server error                                                                | The server failed to properly process the request.                                                                                |
+| 503  | Service unavailable                                                                  | The server is temporarily down. The client should try again with an exponential back off.                                         |
+
+### Headers
+Specify metadata about a request or response. Includes things like how to handle security, catching, data formats and cookies. Common headers:
+| Header                      | Example                              | Meaning                                                                                                                                                                        |
+| --------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Authorization               | Bearer bGciOiJIUzI1NiIsI             | A token that authorized the user making the request.                                                                                                                           |
+| Accept                      | image/\*                             | What content format the client accepts. This may include wildcards.                                                                                                            |
+| Content-Type                | text/html; charset=utf-8             | The format of the response content. These are described using standard [MIME](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types) types. |
+| Cookie                      | SessionID=39s8cgj34; csrftoken=9dck2 | Key value pairs that are generated by the server and stored on the client.                                                                                                     |
+| Host                        | info.cern.ch                         | The domain name of the server. This is required in all requests.                                                                                                               |
+| Origin                      | cs260.click                          | Identifies the origin that caused the request. A host may only allow requests from specific origins.                                                                           |
+| Access-Control-Allow-Origin | https://cs260.click                  | Server response of what origins can make a request. This may include a wildcard.                                                                                               |
+| Content-Length              | 368                                  | The number of bytes contained in the response.                                                                                                                                 |
+| Cache-Control               | public, max-age=604800               | Tells the client how it can cache the response.                                                                                                                                |
+| User-Agent                  | Mozilla/5.0 (Macintosh)              | The client application making the request.                                                                                                                                     |
+
+### Body
+Format of body of HTTP request/response is defined by Content-Type header. Ex: HTML text (text/html), binary image format (image/png), JSON (application/json), or JS (text/javascript). Client may specify what formats it accepts using the accept header.
+
+### Cookies
+HTTP is stateless, one request doesn't know anything about previous or future requests. A common method of tracking state is cookie. Generated by server and passed to clinet as HTTP header:
+```http
+HTTP/2 200
+Set-Cookie: myAppCookie=tasty; SameSite=Strict; Secure; HttpOnly
+```
+Client caches cookie and returns it as HTTP header back to server on subsequent requests.
+```http
+HTTP/2 200
+Cookie: myAppCookie=tasty
+```
+Allows server to remember user preferences, authentication credentials, track what user does. 
+
+## SOP and CORS
+Cross-origin requests: JS makes request from one domain while displaying a website from a different domain. This is a security hazard. Any website could be requesting your data by impersonating another website.
+Same Origin Policy (SOP) was created to combat this. SOP only allows JS to make requests to a domain if it's the same domain that user is currently viewing. Provides significant security but introduces complications b/c other websites can't access services of other sites. Cross Origin Resource Sharing (CORS) was made to address this.
+CORS allows client (browser) to specificy origin of request and let server respond w/ what origins are allowed. If the server doesn't specify what origin is allowed, browser assumes it must be the same origin.
+W/ CORS, browser is protecting user from accessing course website's authentication endpoint from wrong origin. CORS only alerts user that something bad is being attempted, course website needs to implement its own precautions to stop a hacker form using its services inappropriately.
+### Using third party services
+Making request to own web services is on same origing so it doesn't violate SOP. If you want to make requests to different domain, then you need to make sure that domain allows requests as defined by "Access-Control-Allow-Origin" header it returns. 
+If it doesn't return one, the browser assumes that all requests must be made from same origin.
+If returns a value of *, any origin can make requests to this service:
+```http
+HTTP/2 200
+access-control-allow-origin: *
+
+Did you hear about the bread factory burning down? They say the business is toast.
+```
+Also succeeds if HTTP header explicitly lists your web application domain:
+```http
+HTTP/2 200
+access-control-allow-origin: https://cs260.click
+
+I’ll tell you something about German sausages, they’re the wurst
+```
+Test services you want to use before you include them in your app to make sure you'll be able to use them.
+
+## Fetch
+The fetch functino is built into the browser's JS runtime. Can call it from JS code running in a browser.
+Basic usage of fetch takes a URL and returns a promise. The promise "then" function takes a callback func that is asynchronously called when requested URL content is obtained. If return content is of type application/json you can use json func on response obj to conver it to JS obj.
+Make a fetch request to get and display an inspirational quote:
+```js
+fetch('https://api.quotable.io/random')
+  .then((response) => response.json())
+  .then((jsonResponse) => {
+    console.log(jsonResponse);
+  });
+```
+Response:
+```jse
+{
+  content: 'Never put off till tomorrow what you can do today.',
+  author: 'Thomas Jefferson',
+};
+```
+To do a POST request, you populate the options parameter w/ HTTP method and headers:
+```js
+fetch('https://jsonplaceholder.typicode.com/posts', {
+  method: 'POST',
+  body: JSON.stringify({
+    title: 'test title',
+    body: 'test body',
+    userId: 1,
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  },
+})
+  .then((response) => response.json())
+  .then((jsonResponse) => {
+    console.log(jsonResponse);
+  });
+```
+
+## Service design
+Web service provide interactive functionality of web app. Authenticate users, track their session state, provide, store and analyze data, connect peers, and aggregate user info. Good design results in increased productivity, satisfied users and lower processing costs.
+### Model and sequence diagrams
+Helpful to model application's primary obj and interactions of objs. You attempt to stay as close as possible to model that's in user's mind. 
+### Leveraging HTTP
+HTTP verbs like GET, POST, PUT and DELETE often mirror the designed actions of web service. Ex, web service for managing comments might list comments (GET), create comment (POST), update comment (PUT), and delete comment (DELETE). The goal is to leverage those technologies as much as possible so you don't need to recreate functionality they provide and instead take advantage of significant networking infrastructure built up HTTP. 
+### Endpoints
+Web service is usually divided up into multiple service endpoints. Each one provide single functional purpose. 
+![HTTP](https://github.com/webprogramming260/.github/blob/main/profile/webServices/design/webServicesHTTPEndpoints.jpg)
+Things to consider when designing your service's endpoints:
+- Grammatical - w/ HTTP everything is a resource (think noun or obj). You act on resource w/ an HTTP ver. Ex, you might have an order resource that is contained in a store resource. You then create, get, update, and delete order resources on the store resource.
+- Readable - The resource you are referencing w/ an HTTP request should be clearly readable in URL path. Ex, an order resource might contain the path to both the order and the store where the order resource resides: /store/provo/order/28502. Makes it easier to remember how to use the endpoint b/c it's human readable.
+- Discoverable - As you expose resources that contain other resources, you can provide endpoints for the aggregated resources. Makes it so someone using your endpoints only has to remember the top level endpoint and then they can discover everything else. Ex, if you have a store endpoint thatt returns info abt store you can include an endpoint for working w/ a store in the response:
+```http
+GET /store/provo  HTTP/2
+```
+```http
+{
+  "id": "provo",
+  "address": "Cougar blvd",
+  "orders": "https://cs260.click/store/provo/orders",
+  "employees": "https://cs260.click/store/provo/employees"
+}
+```
+- Compatible - When you build your endpoints you want to make it so that you can add new functionality w/out breaking existing clients. Usually means that clients of your service endpoints should ignore anything they don't understand. Consider the 2 following JSON response versions:
+Version1
+```js
+{
+  "name": "John Taylor"
+}
+```
+Version 2
+```js
+{
+  "name": "John Taylor",
+  "givenName": "John",
+  "familyName": "Taylor"
+}
+```
+By adding a new represention of the "name" field, you provide new functionality for clients that know how to use new fields w/out harming older clients that can ignore new ones and only use old representation. You usually want to keep at least 1 previous version of the endpoint to give enough time for all clients to migrate before compatibility is removed.
+- Simple - Keeping your endpoints on primary resources of app helps avoid temptation to add endpoints that duplicate or create parallel access to primary resources. Helpful to write some simple class and sequence diagrams that outline primary resources before beginning to code. These resources should focus on the actual resources of the system you're modeling. They shouldn't focus on data structure or devices used to host resources. Only have 1 way to act on a resource. Endpoints should only do 1 thing.
+- Documented - The Open API specification is good ex. of tooling that helps create, use, and maintain documentation of service endpoints. Should be used to make client libraries for your endpoints and a sondbox for experimentation.  Creating initial draft of endpoint doc before starting will help mentally clarify design. Provide access to endpoint doc w/ production sys helps w/ client implementations and facilitates easier maintenance of service.
+3 models to expose endpoints: RPC, REST, and GraphQL
+### RPC
+Remote Procedure Calls (RPC) expose service endpoints as simple func calls. Usually just leverages the POST HTTP verb. Actual verb and subject of func call is repr. by func name. The name of func is entire path of URL or parameter in the POST body:
+```http
+POST /updateOrder HTTP/2
+
+{"id": 2197, "date": "20220505"}
+```
+or
+```http
+POST /rpc HTTP/2
+
+{"cmd":"updateOrder", "params":{"id": 2197, "date": "20220505"}}
+```
+One adv. is that it maps directly to func calls that might exist within server. Could also be disadv. b/c exposer inner working of service, coupling the endpoints and implementation.
+### REST
+Representational State Transfer (REST) attempts to take adv. of foundational principles of HTTP. REST HTTP verbs always act upon a resource. Operations on resource impact state of resource as it's transferred by a REST endpoint call. Allows for catching functionality of HTTP to work optimally. Ex, GET always returns same resource until PUT is executed on resource. When PUT is used, catched resource is replaced w/ updated resource.
+W/ REST, updateOrder endpoint would look like the following:
+```http
+PUT /order/2197 HTTP/2
+
+{"date": "20220505"}
+```
+Where proper HTTP verb is used and URL path uniquely identifies resource. Makes it easy for HTTP infrastructure like caching to wrok properly.
+### GraphQL
+Focuses on manipulation of data instead of func call (RPC) or resource (REST). Heart of GraphQL is query that specifies the desired data and how it should be joined and filtered. GraphQL was developed to address frustration concerning massive # of REST, or RPC calls, that web app client needs to make in order to support even simple UI widget.
+Instead of making call for getting a store, and then a bunch for calls for gettings store's orders and employees, GraphQL would send single query that requests all of that info in one big JSON response. Serve examines the query, joins desired data, and filters out anything that wasn't wanted.  Ex:
+```js
+query {
+  getOrder(id: "2197") {
+    orders(filter: {date: {allofterms: "20220505"}}) {
+      store
+      description
+      orderedBy
+    }
+  }
+}
+```
+Helps to remove a lot of logic for parsing endpoints and mapping requests to specific resources. Basically in GraphQL, there's only one endpoint. The query endpoint.
+Downside is that client now has significant power to consume resources on the server. Also difficult for server to implement authorization rights to data. However common GraphQL packages provide support for schema implementaions along w/ database adaptors for query support.
+
+## Node.js
+First successful application for deploying JS outside of a browser. Means that JS can power your entire technology stack. Often just referred to as Node. 
+### Package.json
+File contains:
+1. Metadata abt your proj such as its name and default entry JS file
+2. Commands (scripts) that you can executre to do things like run, test or distribute your code
+3. Packages that this proj depends on
+package-lock.json tracks the version of the package that you installed.
+Main steps
+1. Create your proj directory
+2. Initialize it for use w/ NPM by running "npm init -y"
+3. Make sure .gitignore file contains node_modules (you don't want it in your git, it's a large file)
+4. Install any desired packages w/ "npm install <package name here>"
+5. Add "require('<package name here>')" to your app's JS
+6. Use the code the package provides in your JS
+7. Run your code w/ "node index.js"
+### Creating a web service
+W/ JS we can write code that listens on a network port (e.g. 80, 443, etc.), receives HTTP requests, processes them and thne responds. 
+
+## Express
+Express provides support for:
+1. Routing requests for service endpoints
+2. Manipulating HTTP requests w/ JSON body content
+3. Generating HTTP responses
+4. Using "middleware" to add functionality
+Create an express app by using NPM to install Express package, then calling express constructor to create Express app and listen for HTTP requests on desired port
+```
+➜ npm install express
+```
+```js
+const express = require('express');
+const app = express();
+
+app.listen(8080);
+```
+W/ app obj you can now add HTTP routing and middleware funcs to app.
+### Defining Routes
+HTTP endpoints are implements in Express by defining routes that call a func based on HTTP path. Express "app" obj supports all HTTP verbs as funcs on the obj. Ex, if you want to have a route func that handles an HTTP Get request for URL path /store/provo, you would call "get" method on the app:
+```js
+app.get('/store/provo', (req, res, next) => {
+  res.send({name: 'provo'});
+});
+```
+"get" func takes 2 parameters, URL path matching pattern and callback func that's invoked when pattern matches. Path matching parameter is used to match against URL path of incoming HTTP request.
+Callback func has 3 parameters representing HTTP request obj (req), HTTP response obj (res), and "next" routing func that Express expects to be called if routing func wants another func to generate a response.
+Express app compares routing func patterns in order they are added to Express app obj. So if you have 2 routing funcs w/ patterns that both mathc, the 1st one added will be called and given the next matching func in the "next" parameter
+In ex. above, we hard coded the store name to "provo." A real store endpoint would allow any store name to be provided as a parameter in path. Express supporst path parameters by prefixing parameter name w/ :. Creates map of path parameters and populates it w/ matching values found in URL path. Then reference the parameters using "req.params" obj. Using this pattern, can rewrite getStore endpoint as follows:
+```js
+app.get('/store/:storeName', (req, res, next) => {
+  res.send({name: req.params.storeName});
+});
+```
+If run JS using node, we can see resulf when we make HTTP request using curl:
+```js
+➜ curl localhost:8080/store/orem
+{"name":"orem"}
+```
+If you wanted an endpoint that used the POST or DELETE HTTP verb then just use the post or delete func on Express app obj.
+Roue path can also include limited wildcard syntax or even full regular expressions in each pattern. Here's a couple route funcs using different pattern syntax:
+```js
+// Wildcard - matches /store/x and /star/y
+app.put('/st*/:storeName', (req, res) => res.send({update: req.params.storeName}));
+
+// Pure regular expression
+app.delete(/\/store\/(.+)/, (req, res) => res.send({delete: req.params[0]}));
+```
