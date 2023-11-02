@@ -1928,3 +1928,113 @@ app.put('/st*/:storeName', (req, res) => res.send({update: req.params.storeName}
 // Pure regular expression
 app.delete(/\/store\/(.+)/, (req, res) => res.send({delete: req.params[0]}));
 ```
+In these examples, next parameter was omitted since we aren't calling next. If you don't call next, no following middleware funcs will be invoked for request
+### Using middleware
+Standard mediator/middleware pattern has 2 pieces: a mediator and middleware. Middleware represents componentized pieces of functionality. Loads the middleware components and determines their order of execution. When it receives a request, it passes it to the middleware components. Express is the mediator and middleware funcs are the middleware components.
+Middleware func is similar to routing func. That's b/c routing funcs are also middleware funcs. Only difference is that routing funcs are only called if associated pattern matches. Middleware funcs are always called for every HTTP request unless preceding middleware func doesn't call next.  Has following pattern:
+```js
+function middlewareName(req, res, next)
+```
+Func parameters repr. HTTP request obj (req), HTTP response obj (res), and next func to pass processing to. Should usually call next func after completing processing so that next func can execute.
+### Creating your own middleware
+Could create a func that logs out the URL of request, then passes on to next func:
+```js
+app.use((req, res, next) => {
+  console.log(req.originalUrl);
+  next();
+});
+```
+The order that you add your middleware to Express app obj control order that funcs are called. Any middleware that doesn't call next func  stops chain from continuing.
+### Builtin middleware
+Ex of using builtin "static" func:
+```js
+app.use(express.static('public'));
+```
+### Third party middleware
+Can install middleware funcs w/ NPM and include the package in your JS w/ "require" func. Ex of cookie-parser:
+```js
+const cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
+
+app.post('/cookie/:name/:value', (req, res, next) => {
+  res.cookie(req.params.name, req.params.value);
+  res.send({cookie: `${req.params.name}:${req.params.value}`});
+});
+
+app.get('/cookie', (req, res, next) => {
+  res.send({cookie: req.cookies});
+});
+```
+Common for middleware funcs to add fields and funcs to "req" and "res" objs so other middleware can access their functionality. Is seen when cookie-parser adds the req.cookies obj for reading cookies, and adds res.cookie func to make it easy to add a cookie to response. 
+### Error handling middleware
+Takes an additional err parameter that contains the error:
+```js
+function errorMiddlewareName(err, req, res, next)
+```
+Simple error handler for anything that might go wrong while processing HTTP requests:
+```js
+app.use(function (err, req, res, next) {
+  res.status(500).send({type: err.name, message: err.message});
+});
+```
+Test that error middleware is getting used by adding new endpoint that generates an error:
+```js
+app.get('/error', (req, res, next) => {
+  throw new Error('Trouble in river city');
+});
+```
+➜ curl localhost:8080/error
+{"type":"Error","message":"Trouble in river city"}
+### Putting it all together
+Full ex. web service using Express:
+```js
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const app = express();
+
+// Third party middleware - Cookies
+app.use(cookieParser());
+
+app.post('/cookie/:name/:value', (req, res, next) => {
+  res.cookie(req.params.name, req.params.value);
+  res.send({cookie: `${req.params.name}:${req.params.value}`});
+});
+
+app.get('/cookie', (req, res, next) => {
+  res.send({cookie: req.cookies});
+});
+
+// Creating your own middleware - logging
+app.use((req, res, next) => {
+  console.log(req.originalUrl);
+  next();
+});
+
+// Built in middleware - Static file hosting
+app.use(express.static('public'));
+
+// Routing middleware
+app.get('/store/:storeName', (req, res) => {
+  res.send({name: req.params.storeName});
+});
+
+app.put('/st*/:storeName', (req, res) => res.send({update: req.params.storeName}));
+
+app.delete(/\/store\/(.+)/, (req, res) => res.send({delete: req.params[0]}));
+
+// Error middleware
+app.get('/error', (req, res, next) => {
+  throw new Error('Trouble in river city');
+});
+
+app.use(function (err, req, res, next) {
+  res.status(500).send({type: err.name, message: err.message});
+});
+
+// Listening to a network port
+const port = 8080;
+app.listen(port, function () {
+  console.log(`Listening on port ${port}`);
+});
+```
