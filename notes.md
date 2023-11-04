@@ -2081,3 +2081,97 @@ tacos.cs260.click {
 ```js
 sudo service caddy restart
 ```
+## UI Testing
+Test driven development (TDD) is proven to accelerate application creation, protect against regression bugs and demonstrate correctness.
+### Automating the brower - Playwright
+Playright is backed by Microsoft, integrates well w/ VS Code, and runs as Node.js process. 
+Ex:
+```js
+import { test, expect } from '@playwright/test';
+
+test('testWelcomeButton', async ({ page }) => {
+  // Navigate to the welcome page
+  await page.goto('http://localhost:5500/');
+
+  // Get the target element and make sure it is in the correct starting state
+  const hello = page.getByTestId('msg');
+  await expect(hello).toHaveText('Hello world');
+
+  // Press the button
+  const changeBtn = page.getByRole('button', { name: 'change welcome' });
+  await changeBtn.click();
+
+  // Expect that the change happened correctly
+  await expect(hello).toHaveText('I feel not welcomed');
+});
+```
+Must have your application running to test.
+To run in VS Code select "Test Explorer" tab. 
+### Testing various devices - BrowserStack
+Lets you pick from list of physical devices that you can run interactively or use when running automated tests w/ Selenium.
+
+## Endpoint testing
+Generally easier than writing UI tests bc it doesn't require a browser. We'll explore w/ Jest. Test service using VS code debugger. 
+To launch a service using Jest, create another file with suffix of ".test.js". Jest automatically imports itself when it discovers a test file
+store.test.js:
+```js
+test('that equal values are equal', () => {
+  expect(false).toBe(true);
+});
+```
+A test func takes a description as 1st parameter. Description is meant to be human readable. 2nd parameter is func to call. This test calls Jest "expect" func and chains it to the toBe func. Can read this as "expect false to be true" which means that this test will fail.
+To run test, install Jest package w/ NPM:
+```
+npm install jest -D
+```
+Then, replace scripts sectino of package.json file w/ command to run Jest tests:
+```js
+"scripts": {
+  "test": "jest"
+},
+```
+Now can run "test" command to execute tests.
+```js
+npm run test
+```
+### Testing endpoints
+NPM package "supertest" lets us make HTTP requests w/out having to send them over the network:
+```js
+npm install supertest -D
+```
+This test will expect HTTP status code of 200 (OK), and that body fo response contains obj that we expect the endpoint to return. If something goes wrong, end func will contain an error and pass error along to done func. Otherwise, done is called w/out error
+store.test.js:
+```js
+const request = require('supertest');
+const app = require('./server');
+
+test('getStore returns the desired store', (done) => {
+  request(app)
+    .get('/store/provo')
+    .expect(200)
+    .expect({ name: 'provo' })
+    .end((err) => (err ? done(err) : done()));
+});
+```
+Test for updateStore endpoint. Copy the getStore endpoint, change the description, change the HTTP func ver to put, and send body of put request using chained send func:
+```js
+const request = require('supertest');
+const app = require('./server');
+
+test('updateStore saves the correct values', (done) => {
+  request(app)
+    .put('/store/provo')
+    .send({ items: ['fish', 'milk'] })
+    .expect(200)
+    .expect({ items: ['fish', 'milk'], updated: true })
+    .end((err) => (err ? done(err) : done()));
+});
+
+test('getStore returns the desired store', (done) => {
+  request(app)
+    .get('/store/provo')
+    .expect(200)
+    .expect({ name: 'provo' })
+    .end((err) => (err ? done(err) : done()));
+});
+```
