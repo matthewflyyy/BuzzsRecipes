@@ -2175,3 +2175,4 @@ test('getStore returns the desired store', (done) => {
     .end((err) => (err ? done(err) : done()));
 });
 ```
+Can write tests first then write code based on design represented by tests. When tests pass, you know your code is complete. 
