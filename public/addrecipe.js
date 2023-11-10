@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
     addStepLink.addEventListener("click", function(event) {
       event.preventDefault(); // Prevent the link from navigating
 
-      const parentElement = document.getElementById("#recipeForm");
+      const parentElement = document.getElementById("recipeForm");
       // Create a new input field for the step
       const newStepInput = document.createElement("input");
       newStepInput.type = "text";
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
     addIngredientLink.addEventListener("click", function(event) {
       event.preventDefault(); // Prevent the link from navigating
 
-      const parentElement = document.getElementById("#ingredients");
+      const parentElement = document.getElementById("ingredients");
       // Create a new input field for the step
       const newIngredientInput = document.createElement("input");
       newIngredientInput.type = "text";
@@ -44,8 +44,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
   });
-
-let recipes = JSON.parse(localStorage.getItem('recipes')) || [];
 
   function addRecipe() {
 
@@ -73,6 +71,12 @@ let recipes = JSON.parse(localStorage.getItem('recipes')) || [];
     //     console.log("Selected image: ", selectedImage);
     // }
 
+    updateRecipesLocal(recipeData);
+  }
+
+
+  function updateRecipesLocal(recipeData){
+    let recipes = JSON.parse(localStorage.getItem('recipes')) || [];
     recipes.push(recipeData);
 
     localStorage.setItem('recipes', JSON.stringify(recipes));
