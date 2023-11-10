@@ -34,18 +34,37 @@ function addRecipeToPage(recipeData){
     recipeContainer.innerHTML += newRecipeHTML;
 }
 
-const recipeList = JSON.parse(localStorage.getItem('recipes'));
+
 document.addEventListener("DOMContentLoaded", function() {
-    if (recipeList){
-        recipeList.forEach((recipeData) => {
-            addRecipeToPage(recipeData);
-        })
+    async function loadRecipes() {
+        let recipeList = []
+        try{
+            const response = await fetch('/api/recipes');
+            recipeList = await response.json();
+
+            localStorage.setItem('recipes', JSON.stringify(recipeList));
+        } catch {
+            recipeList = JSON.parse(localStorage.getItem('recipes'));
+        }
+        if (recipeList){
+            recipeList.forEach((recipeData) => {
+                addRecipeToPage(recipeData);
+            })
+        }
+        
     }
+    loadRecipes();
+    
+    
+
 });
 // Add the recipes to a list in the local storage to have access to all of them
 
+
+
 // ${recipeData.ingredients.map((ingredient) => `<li>${ingredient}</li>`).join('')}
 // This line is for ingredients once I make it into a list rather than a single element
+
 
 setInterval(() => {
     const score = Math.floor(Math.random() * 3000);

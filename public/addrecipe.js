@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   });
 
-  function addRecipe() {
+  async function addRecipe() {
 
     const recipeData = {
         name: document.getElementById('recipe-name').value,
@@ -70,8 +70,18 @@ document.addEventListener("DOMContentLoaded", function() {
     // if (selectedImage) {
     //     console.log("Selected image: ", selectedImage);
     // }
+    try {
+      const response = await fetch('/api/recipes', {
+        method: 'POST', // Uses post to add to the recipes
+        headers: {'content-type': 'application/json'},
+        body: JSON.stringify(recipeData),
+      });
+      const recipes = await response.json();
+      localStorage.setItem('recipes', JSON.stringify(recipes));
+    } catch {
+      updateRecipesLocal(recipeData);
+    }
 
-    updateRecipesLocal(recipeData);
   }
 
 
