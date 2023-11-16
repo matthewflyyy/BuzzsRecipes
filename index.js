@@ -2,6 +2,7 @@ let recipes = [];
 
 const express = require('express');
 const app = express();
+const DB = require('./database.js');
 
 // The service port. In production the frontend code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 8080;
@@ -17,13 +18,15 @@ const apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
 // GetScores
-apiRouter.get('/recipes', (_req, res) => {
+apiRouter.get('/recipes', async (_req, res) => {
+  const recipes = await DB.getRecipes();
   res.send(recipes);
 });
 
 // SubmitScore
-apiRouter.post('/recipes', (req, res) => {
-    recipes.push(req.body);
+apiRouter.post('/recipes', async(req, res) => {
+    DB.addRecipe(req.body);  
+    const recipes  = await DB.getRecipes();
     res.send(recipes);
 });
 

@@ -1,12 +1,33 @@
 const { MongoClient } = require('mongodb');
 const config = require('./dbConfig.json');
+
 const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
 const client = new MongoClient(url);
+const db = client.db('startup');
+const recipeCollection = db.collection('recipe');
 
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-
-  // ... perform actions on the DB collection
-
-  client.close();
+// This will asynchronously test the connection and exit the process if it fails
+(async function testConnection() {
+  await client.connect();
+  await db.command({ ping: 1 });
+})().catch((ex) => {
+  console.log(`Unable to connect to database with ${url} because ${ex.message}`);
+  process.exit(1);
 });
+
+async function addRecipe(recipe) {
+  const result = await recipeCollection.insertOne(recipe);
+  return result;
+}
+
+function getRecipes() {
+  const query = {};
+  const options = {
+    sort: { recipe: 1},
+    limit: 10,
+  };
+  const cursor = recipeCollection.find(query, options);
+  return cursor.toArray();
+}
+
+module.exports = { addRecipe, getRecipes };
