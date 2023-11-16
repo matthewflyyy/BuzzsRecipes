@@ -2176,3 +2176,221 @@ test('getStore returns the desired store', (done) => {
 });
 ```
 Can write tests first then write code based on design represented by tests. When tests pass, you know your code is complete. 
+
+# Data Services
+Historically, SQL databsases have served as general piurpose data service solution. Now specialty data services w/ better support are more commonly used, called "NoSQL" solutions b/c don't use general purpose relational database paradigms popularized by SQL DBs.
+Some popular data services:
+| Service       | Specialty             |
+| ------------- | --------------------- |
+| MySQL         | Relational queries    |
+| Redis         | Memory cached objects |
+| ElasticSearch | Ranked free text      |
+| MongoDB       | JSON objects          |
+| DynamoDB      | Key value pairs       |
+| Neo4J         | Graph based data      |
+| InfluxDB      | Time series data      |
+## MongoDB
+We will use MongoDB. A mongo DB is made up of 1 or more collections that each contain JSON documents. Can think of collection as large array of JS objs, each w/ unique ID. Sample of collection of houses available for rent:
+```js
+[
+  {
+    _id: '62300f5316f7f58839c811de',
+    name: 'Lovely Loft',
+    summary: 'A charming loft in Paris',
+    beds: 1,
+    last_review: {
+      $date: '2022-03-15T04:06:17.766Z',
+    },
+    price: 3000,
+  },
+  {
+    _id: '623010b97f1fed0a2df311f8',
+    name: 'Infinite Views',
+    summary: 'Modern home with infinite views from the infinity pool',
+    property_type: 'House',
+    beds: 5,
+    price: 250,
+  },
+];
+```
+Mongo has no strict schema requirements. Each doc in collection usually follow similar schema, but each doc can have specialized fields present and common fields missing. To add new field to Mongo collection, just insert field into docs as desired. If field isn't present, or has different type in some docs, then doc simply doesn't mathc query criteria when field is referenced.
+Follows JS-inspired flavor. Queries for rent collection from above:
+```js
+// find all houses
+db.house.find();
+
+// find houses with two or more bedrooms
+db.house.find({ beds: { $gte: 2 } });
+
+// find houses that are available with less than three beds
+db.house.find({ status: 'available', beds: { $lt: 3 } });
+
+// find houses with either less than three beds or less than $1000 a night
+db.house.find({ $or: [(beds: { $lt: 3 }), (price: { $lt: 1000 })] });
+
+// find houses with the text 'modern' or 'beach' in the summary
+db.house.find({ summary: /(modern|beach)/i });
+```
+### Using MongoDB in your app
+Install mongoDB package:
+```js
+➜ npm install mongodb
+```
+Then use MongoClient obj to make client connection to DB server. Requieres username, password, and hostname of db server:
+```js
+const { MongoClient } = require('mongodb');
+
+const userName = 'holowaychuk';
+const password = 'express';
+const hostname = 'mongodb.com';
+
+const url = `mongodb+srv://${userName}:${password}@${hostname}`;
+
+const client = new MongoClient(url);
+```
+W/ client connection, can get db obj and from that a collection obj. Collection obj allows you to insert, and query for, docs. Just call "insertOne" func on collection obj and pass it JS obj to insert JS obj as Mongo doc. When you insert doc, if db/collection doesn't exist, Mongo will automatically make it for you.
+```js
+const collection = client.db('rental').collection('house');
+
+const house = {
+  name: 'Beachfront views',
+  summary: 'From your bedroom to the beach, no shoes required',
+  property_type: 'Condo',
+  beds: 1,
+};
+await collection.insertOne(house);
+```
+To query for docs, use find func on collection obj. Find func is asynchronous so use await keyword.
+```js
+const cursor = collection.find();
+const rentals = await cursor.toArray();
+rentals.forEach((i) => console.log(i));
+```
+If you don't supply parameters to find func, it will return all docs in collection. Output:
+```js
+[
+  {
+    _id: new ObjectId('639a96398f8de594e198fc13'),
+    name: 'Beachfront views',
+    summary: 'From your bedroom to the beach, no shoes required',
+    property_type: 'Condo',
+    beds: 1,
+  },
+];
+```
+Can provide a query and options to find func. In ex below, we query for property_type of Condo that has < 2 bedrooms. We also specify options to sort by descending price, limit results to 1st 10 docs:
+```js
+const query = { property_type: 'Condo', beds: { $lt: 2 } };
+
+const options = {
+  sort: { price: -1 },
+  limit: 10,
+};
+
+const cursor = collection.find(query, options);
+const rentals = await cursor.toArray();
+rentals.forEach((i) => console.log(i));
+```
+## Managed Services
+3rd party services that manage data service. Allows you to focus more on application and not on the infrstructure. 
+### MongoDB Atlas
+All major cloud provides offer multiple data services. 
+## Keeping your keys out of your code
+Protect your credential for connecting to your Mongo database. A common mistake is putting them into your code in a public GitHub repo. Instead you can load your credentials when the app executes. A common way is to have a JSON config file that makes DB connection. Then use config file in development environment and deploy it to your production environment.
+Steps:
+1. Create file "dbConfig.json" in same directory as DB JS that is used to make DB requests. 
+2. Insert MongoDB credential into dbConfig.json file in JSON format:
+```js
+{
+  "hostname": "cs260.abcdefg.mongodb.net",
+  "userName": "myMongoUserName",
+  "password": "toomanysecrets"
+}
+```
+3. import dbConfig.json content into database.js using Node.js req statement and use data it represents to create connnection URL:
+```js
+{
+  "hostname": "cs260.abcdefg.mongodb.net",
+  "userName": "myMongoUserName",
+  "password": "toomanysecrets"
+}
+```
+Make sure to incllude dbConfig.json in .gitignorefile so it doesn't get pushed up to GitHub.
+## Testing the connection on startup:
+```js
+const config = require('./dbConfig.json');
+
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+const client = new MongoClient(url);
+const db = client.db('rental');
+
+(async function testConnection() {
+  await client.connect();
+  await db.command({ ping: 1 });
+})().catch((ex) => {
+  console.log(`Unable to connect to database with ${url} because ${ex.message}`);
+  process.exit(1);
+});
+```
+## Using Mongo from your code
+Test that things work right:
+```js
+const { MongoClient } = require('mongodb');
+const config = require('./dbConfig.json');
+
+async function main() {
+  // Connect to the database cluster
+  const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+  const client = new MongoClient(url);
+  const db = client.db('rental');
+  const collection = db.collection('house');
+
+  // Test that you can connect to the database
+  (async function testConnection() {
+    await client.connect();
+    await db.command({ ping: 1 });
+  })().catch((ex) => {
+    console.log(`Unable to connect to database with ${url} because ${ex.message}`);
+    process.exit(1);
+  });
+
+  // Insert a document
+  const house = {
+    name: 'Beachfront views',
+    summary: 'From your bedroom to the beach, no shoes required',
+    property_type: 'Condo',
+    beds: 1,
+  };
+  await collection.insertOne(house);
+
+  // Query the documents
+  const query = { property_type: 'Condo', beds: { $lt: 2 } };
+  const options = {
+    sort: { score: -1 },
+    limit: 10,
+  };
+
+  const cursor = collection.find(query, options);
+  const rentals = await cursor.toArray();
+  rentals.forEach((i) => console.log(i));
+}
+
+main().catch(console.error);
+```
+To execute above ex:
+1. create directory called mongoTest
+2. save above content to file named index.js
+3. create file "dbConfig.json" w/ DB credentials
+4. npm init -y
+5. npm install mongodb
+6. node index.js
+Should output:
+```js
+{
+_id: new ObjectId("639b51b74ef1e953b884ca5b"),
+name: 'Beachfront views',
+summary: 'From your bedroom to the beach, no shoes required',
+property_type: 'Condo',
+beds: 1
+}
+```

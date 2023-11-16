@@ -59,3 +59,5 @@ For this deliverable I implemented by JavaScript so that the application works f
 - **WebSocket** - On the All Recipes page, a "user" periodically adds a new recipe at the top-left corner. This will be replaced with WebSocket messages later.
 - **Application Logic** - When you are creating a recipe, there is a button to add ingredients and add more steps to your recipe. Those ingredients and instructions are then displayed on the recipe page with the instructions in numerical order.
 
+# Service deliverable
+For this deliverable I added backend endpoints that receives recipes and returns the added recipes. I also get quotes from a 3rd party endpoint.
