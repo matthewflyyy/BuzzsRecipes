@@ -66,3 +66,9 @@ For this deliverable I added backend endpoints that receives recipes and returns
 - **Calls to third party endpoints** - Call to thirdparty endpoint to get quotes that are placed on the about page.
 - **Backend service endpoints** - Endpoints for added recipes.
 - **Frontend calls service endpoints** - I did this using the fetch function to retrieve the recipes.
+
+# Database deliverable
+For this deliverable, I stored the recipes in a database.
+- **MongoDB Atlas database created** - done!
+- **Endpoints for data** - My endpoints process the data and send it to Mongo.
+- **Stores data in MongoDB** - done!
