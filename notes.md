@@ -2394,3 +2394,204 @@ property_type: 'Condo',
 beds: 1
 }
 ```
+
+# Authorization services
+To remember a user's data, you need a way to uniquely associate data w/ a particular credential. Usually means you authenticate a user by asking for info like email and password. You then remember, for some period of time, that user has authenticated by storing an authentication token on user's device. Often that's stored in a cookie that's passed back to web service on each request. 
+Determining the authorization of a user is important (what they are allowed to do). Once you can authenticate a user, you can store their authorization too. 
+Authorization services often use standard protocols for authenticating and authorizng. These include standards like OAuth, SAML, and OIDC. Additionally, they usually support concepts like Single Sign On (SSO) and Federated Login. SSO allows a user to use the same credential for multiple web apps. Ex, you can log into github using google. Federated login allows a user to log in once and then the authentication token is reused to automatically log the user into multiple websites. Ex, gmail lets you also use google docs and youtube w/out logging in again.
+
+## Account creation and login
+1st step towards supporting authentication in web app is providing way for users to uniquely identify themselves. Usually requires 2 service endpoints. 1 to initially create an authentication credential and a 2nd to authenticate or login on future visits. Once a user is authenticated, we can control access to other endpoints. Ex, web services often have a getMe endpoint that gives info about current user. 
+### Create authentication endpoint
+Takes email and password and returns a cookie containing the authentication token and user ID. If email already exists, returns a 409 (conlfict) status code.
+```js
+POST /auth/create HTTP/2
+Content-Type: application/json
+
+{
+  "email":"marta@id.com",
+  "password":"toomanysecrets"
+}
+```
+```js
+HTTP/2 200 OK
+Content-Type: application/json
+Set-Cookie: auth=tokenHere
+
+{
+  "id":"337"
+}
+```
+### Login authentication endpoint
+Takes an email and password and returns a cookie containing the authentication token and user ID. If email doesn't exist or password's bad, returns a 401 (unauthorized) status code.
+```js
+POST /auth/login HTTP/2
+Content-Type: application/json
+
+{
+  "email":"marta@id.com",
+  "password":"toomanysecrets"
+}
+```
+```js
+HTTP/2 200 OK
+Content-Type: application/json
+Set-Cookie: auth=tokenHere
+
+{
+  "id":"337"
+}
+```
+### GetMe endpoint
+Uses the authentication token stored in cookie to look up and return info abt authenticated user. If token/user doesn't exist it returns a 401 (unauthorized) status code.
+```js
+GET /user/me HTTP/2
+Cookie: auth=tokenHere
+```
+```js
+HTTP/2 200 OK
+Content-Type: application/json
+
+{
+  "email":"marta@id.com"
+}
+```
+### Web service
+Web service using express:
+```js
+const express = require('express');
+const app = express();
+
+app.post('/auth/create', async (req, res) => {
+  res.send({ id: 'user@id.com' });
+});
+
+app.post('/auth/login', async (req, res) => {
+  res.send({ id: 'user@id.com' });
+});
+
+const port = 8080;
+app.listen(port, function () {
+  console.log(`Listening on port ${port}`);
+});
+```
+### Handling requests
+1st step is to read credentials from body of HTTP request. Since body is designed to conatin JSON we tell Express that it should parse HTTP reqs, w/ content type of application/json, automatically into JS obj. Do this w/ express.json middleware. Then, read email and password directly out of req.body obj. 
+```js
+app.use(express.json());
+
+app.post('/auth/create', (req, res) => {
+  res.send({
+    id: 'user@id.com',
+    email: req.body.email,
+    password: req.body.password,
+  });
+});
+```
+Now we can change code to add a check to see if we already have a user w/ that email. If we do, return 409 (conflict) status code. Otherwise, create new user and return user ID:
+```js
+app.post('/auth/create', async (req, res) => {
+  if (await getUser(req.body.email)) {
+    res.status(409).send({ msg: 'Existing user' });
+  } else {
+    const user = await createUser(req.body.email, req.body.password);
+    res.send({
+      id: user._id,
+    });
+  }
+});
+```
+### Using the database
+We want to persistently store users in Mongo, so we set up our code to connect to and use DB:
+```js
+const { MongoClient } = require('mongodb');
+
+const userName = 'holowaychuk';
+const password = 'express';
+const hostname = 'mongodb.com';
+
+const url = `mongodb+srv://${userName}:${password}@${hostname}`;
+
+const client = new MongoClient(url);
+```
+W/ mongo collection obj, we can implement getUser and createUser funcs:
+```js
+function getUser(email) {
+  return collection.findOne({ email: email });
+}
+
+async function createUser(email, password) {
+  const user = {
+    email: email,
+    password: password,
+    token: 'xxx',
+  };
+  return collection.insertOne(user);
+}
+```
+But, we're missing a real authentication toke and we can't store a clear text password in our DB.
+### Generating authentication tokens
+To generate reasonable authentication toke, use uuid package (Universally unique identifier), which creates a hard to guess, random, unique ID:
+```js
+const uuid = require('uuid');
+
+token: uuid.v4();
+```
+### Securing passwords
+Failing to secure passwords is a major security concer. Even if your app isn't very valuable, users often reuse passwords, so hackers could have their passwords for other websites too.
+Instead of storing password directly, we want to cryptographically hash the password so that we never store actual password. To validate a password, hash login password and compare it to our stored hash of the password.
+To hash passwords, use bcrypt package, which creates secure one-way hash of password.
+```js
+const bcrypt = require('bcrypt');
+
+async function createUser(email, password) {
+  // Hash the password before we insert it into the database
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  const user = {
+    email: email,
+    password: passwordHash,
+    token: uuid.v4(),
+  };
+  await collection.insertOne(user);
+
+  return user;
+}
+```
+### Passing authentication tokents
+Use HTTP cookies to pass generated authentication token to browser when login endpoint is called and get it back on subsequent requests. cookie-parser package provides middleware for cookies.
+When user is successfully creates, or logged in, we set cookie header. Since we're storing an authentication token in cookie, we want it to be as secure as possible, so we use httpOnly, secure and sameSite options.
+- httpOnly tells browser not to allow JS running on browser to read cookie
+- sercure requires HTTPS to be used when sending cookie back to server.
+- sameSite will only return cookie to domain that generated it
+```js
+const cookieParser = require('cookie-parser');
+
+// Use the cookie parser middleware
+app.use(cookieParser());
+
+apiRouter.post('/auth/create', async (req, res) => {
+  if (await DB.getUser(req.body.email)) {
+    res.status(409).send({ msg: 'Existing user' });
+  } else {
+    const user = await DB.createUser(req.body.email, req.body.password);
+
+    // Set the cookie
+    setAuthCookie(res, user.token);
+
+    res.send({
+      id: user._id,
+    });
+  }
+});
+
+function setAuthCookie(res, authToken) {
+  res.cookie('token', authToken, {
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
+```
+### Login endpoint
+Login authorization endpoint needs to get hashed password from db, compare it to provided password using bcrypt.compare, and if successful set authenticaiton token in cookie. If password doesn't match, or no user w/ given email, endpoint returns status 401 (unauthorized).
