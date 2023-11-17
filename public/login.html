@@ -21,7 +21,7 @@
               <menu>
                 <li><a href="index.html">Home</a></li>
                 <li>
-                    <div class="dropdown">
+                    <div id="recipeLink" class="dropdown" style="display: none;">
                         <a class="dropbtn" href="recipes.html">Recipes</a>
                         <div id="myDropdown" class="dropdown-content">
                         <a href="recipes.html">All</a>
@@ -32,7 +32,7 @@
                     </div>
                 </li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="myaccount.html">My Account</a></li>
+                <li><a id="myaccount" href="myaccount.html" style="display: none;">My Account</a></li>
               </menu>
             </nav>
       
@@ -40,19 +40,21 @@
         </header>
 
         <main>
-            <div class="login-box">
+            <div class="login-box" style="display: none;">
             <div class="welcome">Welcome Back!</div>
             <div class="explanation">Login to save and share recipes!</div>
-                <form method="get" action="myaccount.html"> <!-- Creates the log in form and goes to play.html when you submit it-->
-                    <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Your username here" />
-                    <p><label for="password">Password</label>
-                    <input type="text" id="password" placeholder="Your password here" /></p>
-                    <p>
-                        <button class="button" onclick="login()" type="submit">Log in</button>
-                        <button class="button" type="submit" formaction="createaccount.html">Create Account</button>
-                    </p>
-                </form> 
+            <div id="loginControls">
+                <div class="input-group mb-3">
+                  <span class="input-group-text">@</span>
+                  <input class="form-control" type="text" id="username" placeholder="your@email.com" />
+                </div>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">🔒</span>
+                  <input class="form-control" type="password" id="password" placeholder="password" />
+                </div>
+                <button type="button" class="btn btn-primary" onclick="loginUser()">Login</button>
+                <button type="button" class="btn btn-primary" onclick="createUser()">Create</button>
+                <div id="message" class="error"></div>
             </div>
             
         </main> 
@@ -61,5 +63,7 @@
             <br />
             <a class="github" href="https://github.com/matthewflyyy/cs260Fall2023">GitHub</a> <!-- Put github repository at the bottom-->
           </footer>
+          <script src="home.js"></script>
+          <script src="login.js"></script>
     </body>
 </html>

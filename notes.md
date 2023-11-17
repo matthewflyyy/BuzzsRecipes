@@ -2595,3 +2595,29 @@ function setAuthCookie(res, authToken) {
 ```
 ### Login endpoint
 Login authorization endpoint needs to get hashed password from db, compare it to provided password using bcrypt.compare, and if successful set authenticaiton token in cookie. If password doesn't match, or no user w/ given email, endpoint returns status 401 (unauthorized).
+```js
+app.post('/auth/login', async (req, res) => {
+  const user = await getUser(req.body.email);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      setAuthCookie(res, user.token);
+      res.send({ id: user._id });
+      return;
+    }
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+```
+### GetMe endpoint
+To implement this, get user obj from db by querying on authentication token. If there's not an authentication token, or there's no user w/ that token, return status 401 (unauthorized)
+```js
+app.get('/user/me', async (req, res) => {
+  authToken = req.cookies['token'];
+  const user = await collection.findOne({ token: authToken });
+  if (user) {
+    res.send({ email: user.email });
+    return;
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+```
