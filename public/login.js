@@ -1,15 +1,15 @@
-(async () => {
-  const userName = localStorage.getItem('userName');
-  const loggedIn = ['myaccount', 'recipeLink']
-  if (userName) {
-    // document.querySelector('#playerName').textContent = userName;
-    setDisplay(['loginControls'], 'none');
-    setDisplay(loggedIn, 'block');
-  } else {
-    setDisplay(['loginControls'], 'block');
-    setDisplay(loggedIn, 'none');
-  }
-})();
+// (async () => {
+//   const userName = localStorage.getItem('userName');
+//   const loggedIn = ['myaccount', 'recipeLink']
+//   if (userName) {
+//     // document.querySelector('#playerName').textContent = userName;
+//     setDisplay(['loginControls'], 'none');
+//     setDisplay(loggedIn, 'block');
+//   } else {
+//     setDisplay(['loginControls'], 'block');
+//     setDisplay(loggedIn, 'none');
+//   }
+// })();
 
 async function loginUser() {
   loginOrCreate(`/api/auth/login`);
@@ -59,15 +59,15 @@ async function getUser(email) {
   return null;
 }
 
-function setDisplay(controlId, display) {
-  controlId.forEach(element => {
-    const displayEl = document.querySelector(`#${element}`);
-    if (displayEl){
-      displayEl.style.display = display;
-    }
-  });
-  // const playControlEl = document.querySelector(`#${controlId}`);
-  // if (playControlEl) {
-  //   playControlEl.style.display = display;
-  // }
-}
+// function setDisplay(controlId, display) {
+//   controlId.forEach(element => {
+//     const displayEl = document.querySelector(`#${element}`);
+//     if (displayEl){
+//       displayEl.style.display = display;
+//     }
+//   });
+//   // const playControlEl = document.querySelector(`#${controlId}`);
+//   // if (playControlEl) {
+//   //   playControlEl.style.display = display;
+//   // }
+// }

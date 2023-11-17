@@ -67,8 +67,14 @@ For this deliverable I added backend endpoints that receives recipes and returns
 - **Backend service endpoints** - Endpoints for added recipes.
 - **Frontend calls service endpoints** - I did this using the fetch function to retrieve the recipes.
 
-# Database deliverable
+# Database Deliverable
 For this deliverable, I stored the recipes in a database.
 - **MongoDB Atlas database created** - done!
 - **Endpoints for data** - My endpoints process the data and send it to Mongo.
 - **Stores data in MongoDB** - done!
+
+# Login Deliverable
+- **User Registration** - Creates a new account in the database.
+- **Existing User** - Takes the user to their account if the user already exists.
+- **Use MongoDB to store credentials** - Stores the credentials for each user.
+- **Restricts Functionality** - Users don't have access to recipes, an account page or have the ability to add recipes until they have logged in.
