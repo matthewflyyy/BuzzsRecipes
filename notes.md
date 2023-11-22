@@ -2621,3 +2621,182 @@ app.get('/user/me', async (req, res) => {
   res.status(401).send({ msg: 'Unauthorized' });
 });
 ```
+
+# WebSocket
+It's fully duplexed. This means that after initial connection is made from client, using vanilla HTTP, then upgraded by server to WebSocket connection, relationship changes to peer-to-peer connection where either party can efficiently send data at any time.
+## Creating WS conversation
+JS running on browser can initiate WS connection w/ browser's WS API. 1st create WS obj buy specifying port to communicate on.
+Send messages w/ send func, and register callback using onmessage func to receive messages.
+```js
+const socket = new WebSocket('ws://localhost:9900');
+
+socket.onmessage = (event) => {
+  console.log('received: ', event.data);
+};
+
+socket.send('I am listening');
+```
+Server uses ws package to create WebSocketServer that's listening on same port that browser's using. By specifying a port when create WebSocketServer, you're telling server to listen for HTTP connections on that port and to automatically upgrade them to WS connection if req has connection: Upgrade header.
+When connection is detected, calls server's on connection callback. Server can send messages w/ send func, can register callback using on message func to receive messages.
+```js
+const { WebSocketServer } = require('ws');
+
+const wss = new WebSocketServer({ port: 9900 });
+
+wss.on('connection', (ws) => {
+  ws.on('message', (data) => {
+    const msg = String.fromCharCode(...data);
+    console.log('received: %s', msg);
+
+    ws.send(`I heard you say "${msg}"`);
+  });
+
+  ws.send('Hello webSocket');
+});
+```
+## WebSocket Chat
+Disable chat features if name is ever empty:
+```js
+const chatControls = document.querySelector('#chat-controls');
+const myName = document.querySelector('#my-name');
+myName.addEventListener('keyup', (e) => {
+  chatControls.disabled = myName.value === '';
+});
+```
+Appends new message to html:
+```js
+function appendMsg(cls, from, msg) {
+  const chatText = document.querySelector('#chat-text');
+  chatText.innerHTML = `<div><span class="${cls}">${from}</span>: ${msg}</div>` + chatText.innerHTML;
+}
+```
+Send message when enter is hit:
+```js
+const input = document.querySelector('#new-msg');
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});
+```
+Send message func:
+```js
+function sendMessage() {
+  const msgEl = document.querySelector('#new-msg');
+  const msg = msgEl.value;
+  if (!!msg) {
+    appendMsg('me', 'me', msg);
+    const name = document.querySelector('#my-name').value;
+    socket.send(`{"name":"${name}", "msg":"${msg}"}`);
+    msgEl.value = '';
+  }
+}
+```
+Set WS protocol to be non-secure (ws) if HTTP, otherwise secure (wss) if HTTPS. Notify user that chat's ready by listening to onopen and appending text to display w/ appendMsg func:
+```js
+// Adjust the webSocket protocol to what is being used for HTTP
+const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+
+// Display that we have opened the webSocket
+socket.onopen = (event) => {
+  appendMsg('system', 'websocket', 'connected');
+};
+```
+Displays received messages using appendMsg func:
+```js
+socket.onmessage = async (event) => {
+  const text = await event.data.text();
+  const chat = JSON.parse(text);
+  appendMsg('friend', chat.name, chat.msg);
+};
+```
+If WS closes, display that to user and disable controls:
+```js
+socket.onclose = (event) => {
+  appendMsg('system', 'websocket', 'disconnected');
+  document.querySelector('#name-controls').disabled = true;
+  document.querySelector('#chat-controls').disabled = true;
+};
+```
+### Web service
+Simple express app. Serve up html, css, and js files w/ static middleware:
+```js
+const { WebSocketServer } = require('ws');
+const express = require('express');
+const app = express();
+
+// Serve up our webSocket client HTML
+app.use(express.static('./public'));
+
+const port = process.argv.length > 2 ? process.argv[2] : 3000;
+server = app.listen(port, () => {
+  console.log(`Listening on ${port}`);
+});
+```
+### Websocket server
+Instead of letting WebSocketServer control both HTTP connection and upgrading to WS, we want to use HTTP connection that Express is providing and handle the upgrade to WS ourselves. Done by specifying noServer option when creating WSServer then handling upgrade notification that occurs when client reqs upgrade of protocol from HTTP to WS:
+```js
+// Create a websocket object
+const wss = new WebSocketServer({ noServer: true });
+
+// Handle the protocol upgrade from HTTP to WebSocket
+server.on('upgrade', (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, function done(ws) {
+    wss.emit('connection', ws, request);
+  });
+});
+```
+### Forwarding messages
+W/ WS server we can use connection, mesage, and close events to forwards messages between peers. On connection, we insert an obj representing connection into list of all connections from chat peers Then when message is received, we loop thru peer connections and forward it to everyone except peer who initiated the request. Finally, remove a connection from peer connection list when it's closed:
+```js
+// Keep track of all the connections so we can forward messages
+let connections = [];
+
+wss.on('connection', (ws) => {
+  const connection = { id: connections.length + 1, alive: true, ws: ws };
+  connections.push(connection);
+
+  // Forward messages to everyone except the sender
+  ws.on('message', function message(data) {
+    connections.forEach((c) => {
+      if (c.id !== connection.id) {
+        c.ws.send(data);
+      }
+    });
+  });
+
+  // Remove the closed connection so we don't try to forward anymore
+  ws.on('close', () => {
+    connections.findIndex((o, i) => {
+      if (o.id === connection.id) {
+        connections.splice(i, 1);
+        return true;
+      }
+    });
+  });
+});
+```
+### Keeping connections alive
+WS connection will eventually close automatically if no data's sent across it. To prevent that, WS protocol supports ability to send ping message to see if peer's still there and receive pong responses to confirm it.
+Use setInterval to send ping every 10 sec to each peer connection and clean up any connections that didn't respond to previous ping:
+```js
+setInterval(() => {
+  connections.forEach((c) => {
+    // Kill any connection that didn't respond to the ping last time
+    if (!c.alive) {
+      c.ws.terminate();
+    } else {
+      c.alive = false;
+      c.ws.ping();
+    }
+  });
+}, 10000);
+```
+In connection handler, listen for pong response and mark connection as alive:
+```js
+// Respond to pong messages by marking the connection alive
+ws.on('pong', () => {
+  connection.alive = true;
+});
+```
