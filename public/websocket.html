@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WebSocket Example</title>
+</head>
+<body>
+  <button id="sendMessageButton">Send Message</button>
+  <script>
+    const ws = new WebSocket('ws://localhost:3000');
+
+    ws.onmessage = (event) => {
+      alert('Received message: ' + event.data);
+    };
+
+    document.getElementById('sendMessageButton').addEventListener('click', () => {
+      const message = 'Someone clicked the button!';
+      ws.send(message);
+    });
+  </script>
+</body>
+</html>

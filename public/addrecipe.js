@@ -1,3 +1,5 @@
+const RecipeEvent = 'recipePosted';
+
 document.addEventListener("DOMContentLoaded", function() {
     
     // Select the "Add Step" link by its ID
@@ -76,6 +78,9 @@ document.addEventListener("DOMContentLoaded", function() {
         headers: {'content-type': 'application/json'},
         body: JSON.stringify(recipeData),
       });
+
+      broadcastEvent(userName, RecipeEvent, recipeData.name)
+
       const recipes = await response.json();
       localStorage.setItem('recipes', JSON.stringify(recipes));
     } catch {
@@ -92,3 +97,36 @@ document.addEventListener("DOMContentLoaded", function() {
     localStorage.setItem('recipes', JSON.stringify(recipes));
     console.log(localStorage.getItem('recipes'));
   }
+
+// functionalit for peer communicaiton using WS
+function configureWebSocket() {
+  const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+  socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+  socket.onopen = (event) => {
+    displayMsg('system', 'recipe', 'connected');
+  };
+  socket.onclose = (event) => {
+    displayMsg('system', 'recipe', 'disconnected');
+  };
+  socket.onmessage = async (event) => {
+    const msg = JSON.parse(await event.data.text());
+    if (msg.type === RecipeEvent) {
+      displayMsg('User', msg.from, `posted ${msg.value.name}`);
+  };
+}
+}
+
+function displayMsg(cls, from, msg) {
+  const chatText = document.querySelector('#player-messages');
+  chatText.innerHTML =
+    `<div class="event"><span class="${cls}-event">${from}</span> ${msg}</div>` + chatText.innerHTML;
+}
+
+function broadcastEvent(from, type, value) {
+  const event = {
+    from: from,
+    type: type,
+    value: value,
+  };
+  socket.send(JSON.stringify(event));
+}

@@ -66,9 +66,9 @@ document.addEventListener("DOMContentLoaded", function() {
 // This line is for ingredients once I make it into a list rather than a single element
 
 
-setInterval(() => {
-    const score = Math.floor(Math.random() * 3000);
-    const chatText = document.querySelector('#player-messages');
-    chatText.innerHTML =
-      `<div class="event"><span class="player-event">Brooklynn</span> posted a recipe: " "` + chatText.innerHTML;
-  }, 5000);
+// setInterval(() => {
+//     const score = Math.floor(Math.random() * 3000);
+//     const chatText = document.querySelector('#player-messages');
+//     chatText.innerHTML =
+//       `<div class="event"><span class="player-event">Brooklynn</span> posted a recipe: " "` + chatText.innerHTML;
+//   }, 5000);

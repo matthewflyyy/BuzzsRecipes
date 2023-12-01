@@ -2800,3 +2800,107 @@ ws.on('pong', () => {
   connection.alive = true;
 });
 ```
+
+# Web Frameworks
+Seek to make writing of web apps easier by providing tools for completing common tasks. Includes modularizing code, creating single page apps, simplifying reactivity, and supporting diverse hardware devices.
+Some take things like HTML, CSS and JS and create new hybrid file formats that combine things like HTML and JS into 1 file. Abstracting away core web file formats puts focus on functional components rather than files.
+## Vue
+combines HTML, CSS and JS into 1 file. HTML represented by "template" element
+## Svelte
+Also combines HTML, CSS, and JS into 1 file. Requires a transpiler to generate browser-ready code, instead of runtime virtual DOM
+## React
+Combines JS and HTML into its components format. CSS must be declared outside the JSX file. Component highly leverages funcitonality of JS and can be represented as func or class.
+## Angular component
+Defines what JS, HTML, and CSS are combined together. Keeps fairly strong separation of files that're usually grouped together in directory rather than using single file representation.
+
+# React
+Created by Jordan Walke for use at Facebook.
+Abstracts HTML into JS variant called JSX. JSX is converted into valid HTML and JS using preprocessor called Babel. 
+React.createElement func then generates DOM elements and monitors data they represent for changes. When change is discovered, React will trigger dependent changes.
+## Components
+Let you modularize the functionality of your app. Allows underlying code to directly repr the components that user interacts w/. Also enables code reuse as common app components often show up repeatedly.
+### The render function
+1 of primary purposes of component is to generate UI. Done w/ component's "render" func. Whatever's return by this fun is inserted into component HTML elemnt.
+Ex: JSX file contains react component "demo" would cause react to load demo component, call render func, and insert result into place of Demo element. Demo isn't valid html, that is replaced w/ resulting rendered html.
+JSX:
+```jsx
+<div>
+  Component: <Demo />
+</div>
+```
+React component:
+```jsx
+function Demo() {
+  const who = 'world';
+  return <b>Hello {who}</b>;
+}
+```
+Resulting html:
+```html
+<div>Component: <b>Hello world</b></div>
+```
+
+### Properties
+React components allow you to pass info to them in form of element properties. Component receives properties in its constructor and can display them when rendered.
+JSX:
+```jsx
+<div>Component: <Demo who="Walke" /><div>
+```
+React component:
+```jsx
+function Demo(props) {
+  return <b>Hello {props.who}</b>;
+}
+```
+Resulting html:
+```js
+<div>Component: <b>Hello Walke</b></div>
+```
+### State
+Component can have internal state. Created by calling React.useState hook func. useState func returns a var that contains the current state and func to update the state. Ex: Create a state var called clicked and toggles the click state in updateClicked func that gets called when paragraph text is clicked.
+```jsx
+const Clicker = () => {
+  const [clicked, updateClicked] = React.useState(false);
+
+  const onClicked = (e) => {
+    updateClicked(!clicked);
+  };
+
+  return <p onClick={(e) => onClicked(e)}>clicked: {`${clicked}`}</p>;
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Clicker />);
+```
+Can user JSX w/out func. Simple var representing JSX will work anyplace you would otherwise provide a component.
+```jsx
+const hello = <div>Hello</div>;
+
+ReactDOM.render(hello, document.getElementById('root'));
+```
+
+### Class style components
+React team is moving away from class style representaiton, and for that reason you probably shouldn't use it. Ex: Class style component for Clicker component we created above. Major difference is that properties are loaded on constructor and state is set using a setState func on component obj.
+```jsx
+class Clicker extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      clicked: false,
+    };
+  }
+  onClicked() {
+    this.setState({
+      clicked: !this.state.clicked,
+    });
+  }
+  render() {
+    return <p onClick={(e) => this.onClicked(e)}>clicked: {`${this.state.clicked}`}</p>;
+  }
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Clicker />);
+```
+### Reactivity
+Controls how a component reacts to actions taken by user or events that happen within the app. Whenever a component's state or properties change, the render func for the component and all its dependent component render funs are called.
