@@ -78,3 +78,9 @@ For this deliverable, I stored the recipes in a database.
 - **Existing User** - Takes the user to their account if the user already exists.
 - **Use MongoDB to store credentials** - Stores the credentials for each user.
 - **Restricts Functionality** - Users don't have access to recipes, an account page or have the ability to add recipes until they have logged in.
+# WebSocket Deliverable
+For this deliverable, I created a new "web socket" page that can be accessed from the footer to create a counter that pops up as an alert and goes up in number each time it is clicked.
+-**Backend listens for WebSocket connection** - Done!
+-**Frontend makes WebSocket connection** - Done!
+-**Data sent over WebSocket connection** - Done!
+-**WebSocket data displayed** - Counter is displayed in real time.
