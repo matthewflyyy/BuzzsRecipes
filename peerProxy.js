@@ -25,4 +25,4 @@ server.listen(3000, () => {
   console.log('WebSocket server is listening on port 3000');
 });
 
-module.exports = { peerProxy };
+// module.exports = { peerProxy };
