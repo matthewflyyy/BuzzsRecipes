@@ -7,14 +7,18 @@
 <body>
   <button id="sendMessageButton">Press me!</button>
   <script>
-    const ws = new WebSocket('ws://localhost:3000');
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    const ws = new WebSocket(`${protocol}://${window.location.host}/ws`);
+    console.log("made server");
     let counter = 0;
     ws.onmessage = (event) => {
+      // console.log("received message");
       alert('Count: ' + counter);
     };
 
     document.getElementById('sendMessageButton').addEventListener('click', () => {
       const message = 'Someone clicked the button!';
+      console.log("button clicked");
       counter += 1;
       ws.send(message);
     });
