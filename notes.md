@@ -2904,3 +2904,77 @@ root.render(<Clicker />);
 ```
 ### Reactivity
 Controls how a component reacts to actions taken by user or events that happen within the app. Whenever a component's state or properties change, the render func for the component and all its dependent component render funs are called.
+
+# Toolchains
+Meant to abstract away some of the complexity of web programming:
+- Code repository - Stores code in a shared, versioned, location
+- Linert - removes, or warns, of non-idiomatic code usage
+- Prettier - Formats code according to a shared standard
+- Polyfill - Generates backward compatible code for supporting old browser versions that don't support the latest standards
+- Bundler - Packages code into bundles for delivery to the browser. This enables compatibility (ex. w/ ES6 module support), or performance (w/ lazy loading)
+- Minifier - Removes whitespace and renames vars in order to make code smaller and more efficient to deploy
+- testing - Automated tests at multiple levels to ensure correctness
+- Deployment - Automated packaging and delivery of code from the development environment to the production environment.
+Our toolchain: github as code repo, Vite for jsx, TS, development and debugging support, ESBuild for converting ES6 modules and transpiling (w/ babel underneath), Rollup for bundling and tree shaking, PostCSS for CSS transpiling and simple bash script (desployReact.sh) for deployment.
+
+# Reactivity
+Making UI react to user input/data, is one of foundations of REact. Enables reactivity w/ 3 major pieces of React component: props, state, and render.
+When component JSX is rendered, React parses JSX and creates a list of references to component's state/prop objs. React monitors those objs and if changed detected, it will call component's 'render' func so that impact of change is visualized.
+Following ex has 2 components: parent '<Survey/> and child <Question/>. Suvery has state named color. Question has property named color. Survey passes state to Question as property. Any change in Survey's color will be reflected in Question's color.
+Question has state named answer. Value displayed as part of its content. User can interact w/ this state thru HTML radio input elements. When 1 of inputs is changed, Question's onChange func is called and answer state is updated.
+Updates happen asynchronously, and therefore you don't know when its going to happen, just that it will eventually happen.
+```jsx
+// The Survey component
+const Survey = () => {
+  const [color, updateColor] = React.useState('#737AB0');
+
+  // When the color changes update the state
+  const onChange = (e) => {
+    updateColor(e.target.value);
+  };
+  return (
+    <div>
+      <h1>Survey</h1>
+      {/* Pass the Survey color state as a property to the Question.
+          When the color changes the Question property will also be updated and rendered. */}
+      <Question color={color} />
+
+      <p>
+        <span>Pick a color: </span>
+        {/* Pass the Survey color state as a property to the input element.
+            When the color changes, the input property will also be updated and rendered. */}
+        <input type='color' onChange={(e) => onChange(e)} value={color} />
+      </p>
+    </div>
+  );
+};
+
+// The Question component
+const Question = ({ color }) => {
+  const [answer, updateAnswer] = React.useState('pending...');
+
+  function onChange({ target }) {
+    updateAnswer(target.value);
+  }
+
+  return (
+    <div>
+      <span>Do you like this</span>
+      {/* Color rerendered whenever the property changes */}
+      <span style={{ color: color }}> color</span>?
+      <label>
+        <input type='radio' name='answer' value='yes' onChange={(e) => onChange(e)} />
+        Yes
+      </label>
+      <label>
+        <input type='radio' name='answer' value='no' onChange={(e) => onChange(e)} />
+        No
+      </label>
+      {/* Answer rerendered whenever the state changes */}
+      <p>Your answer: {answer}</p>
+    </div>
+  );
+};
+
+ReactDOM.render(<Survey />, document.getElementById('root'));
+```
