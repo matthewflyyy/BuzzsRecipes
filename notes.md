@@ -3065,3 +3065,38 @@ root.render(
   </BrowserRouter>
 );
 ```
+# Vite
+A common way of taking advantage of all the technologies is to use a Command Line Interface (CLI) to initially set up a web app. CLI saves you the trouble of configuring the toolchain parameters and gets you quickly started w/ a default app.
+We'll use Vite. To make new React-based app using Vite, run following commands:
+```js
+npm create vite@latest demoVite -- --template react
+cd demoVite
+npm install
+npm run dev
+```
+This will create a new web app in the demoVite directory, download the required 3rd party packages, and start up the app using a local HTTP debugging server. Can tell Vite to open your browser to the URL that's hosting your app by pressing o, or press h to see all the Vite CLI options.
+## Generated Project
+Files made by vite:
+| Directory    | File              | Purpose                                                                                                                   |
+| ------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| ./           |                   |                                                                                                                                |
+|              | index.html        | Primary page for the application. This is the starting point to load all of the JSX components beginning with `main.jsx`. |
+|              | package.json      | NPM definition for package dependencies and script commands. This is what maps `npm run dev` to actually start up Vite.   |
+|              | package-lock.json | Version constraints for included packages (do not edit this).                                                             |
+|              | vite.config.js    | Configuration setting for Vite. Specifically this sets up React for development.                                          |
+| ./public     |                   |                                                                                                                           |
+|              | vite.svg          | Vite logo for use as favicon and for display in the app.                                                                  |
+| ./src        |                   |                                                                                                                           |
+|              | main.jsx          | Entry point for code execution. This simply loads the App component found in `App.jsx`.                                   |
+|              | index.css         | CSS for the entire application.                                                                                           |
+|              | App.jsx           | JSX for top level application component. This displays the logs and implements the click counter.                         |
+|              | App.css           | CSS for the top level application component.                                                                              |
+| ./src/assets |                   |                                                                                                                           |
+|              | react.svg         | React logo for display in the app.                                                                                        |
+
+Browser loads index.html which provides HTML element #root that the React app will be injected into. Also includes script element to load main.jsx
+main.jsx creates React app by associating #root el w/ App component found in App.jsx. Causes all the component render funcs to execute and the generated HTML, CSS and JS to be executed in index.html
+## Building a production release
+When you execute npm run dev, you're bundling code to a temp dir that the Vite debut HTTP server loads from. When you want to bundle your app so that you can deploy to a production environment, you need to run npm run build. Executes the build script found in package.json and invokes the Vite CLI. vite build transpiles, minifies, injects proper JS and outputs everything to deployment-ready version contained in a distribution subdirectory named dist.
+## Deploying a production release
+Deployment script for Simon React(deployReact.sh) creates a production distribution by calling npm run build, then compying the resulting dist dir to your production server.
