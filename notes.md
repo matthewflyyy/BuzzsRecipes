@@ -2978,3 +2978,90 @@ const Question = ({ color }) => {
 
 ReactDOM.render(<Survey />, document.getElementById('root'));
 ```
+
+# React Hooks
+Allow React func style components to be able to do everything that a class style component can do and more. As new features are added to React, they're included as hooks. 
+## useEffect hook
+Allows you to represent lifecylce events. Ex, if you want to run a func everytime the component finishes rendering, could do the following:
+```jsx
+function UseEffectHookDemo() {
+  React.useEffect(() => {
+    console.log('rendered');
+  });
+
+  return <div>useEffectExample</div>;
+}
+
+ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
+```
+Can also take action whne component cleans up by returning a cleanup func from func registered w/ useEffect. Ex, everytime component is clicked the state changes, so the component is rerendered. Causes both cleanup func to be called in addition to hook func. If func wasn't rerendered, only cleanup func would be called.
+```jsx
+function UseEffectHookDemo() {
+  const [count, updateCount] = React.useState(0);
+  React.useEffect(() => {
+    console.log('rendered');
+
+    return function cleanup() {
+      console.log('cleanup');
+    };
+  });
+
+  return <div onClick={() => updateCount(count + 1)}>useEffectExample {count}</div>;
+}
+
+ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
+```
+Userful to create side effects like tracking when a component is diplayed or hidden, or creating and disposing of resources.
+## Hook Dependencies
+Can control what triggers a useEffect hook by specifying its dependencies. In following ex, we have two state vars, but only want useEffect hook called when component is initially called and when first var is clicked. Done by passing array of dependencies as 2nd parameter to useEffect call.
+```jsx
+function UseEffectHookDemo() {
+  const [count1, updateCount1] = React.useState(0);
+  const [count2, updateCount2] = React.useState(0);
+
+  React.useEffect(() => {
+    console.log(`count1 effect triggered ${count1}`);
+  }, [count1]);
+
+  return (
+    <ol>
+      <li onClick={() => updateCount1(count1 + 1)}>Item 1 - {count1}</li>
+      <li onClick={() => updateCount2(count2 + 1)}>Item 2 - {count2}</li>
+    </ol>
+  );
+}
+
+ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
+```
+If you specify an empty array [] as hook dependency, then it's only called when component is 1st rendered.
+Hooks can only be used in func style components and must be called at top scope of func. Hook can't be called inside loop or conditional. Ensures that hooks are always called in same order when component is rendered.
+# Router
+Provides essential functionality for single-page apps. W/ multiple-webpage app the headers, footers, navigation, and common components must be either duplicated in each HTML page, or injected before the server sends the page to the browser. W/ single page app, browser only loads one HTML page and then JS is used to manipulate the DOM and give it the appearance of multiple pages. Router defines the routes a user can take thru the app, and automatically manipulates the DOM to display the appropriate framework components. We use react-router-dom Version 6
+Basic implementation has BrowserRouter component that encapsulates the entire app and controls the routing action. Link, or NavLink component captures user nav events and modifies what's rendered by the Routes comopnent by matching up the to and path attributes.
+```jsx
+// Inject the router into the application root DOM element
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  // BrowserRouter component that controls what is rendered
+  // NavLink component captures user navigation requests
+  // Routes component defines what component is routed to
+  <BrowserRouter>
+    <div className='app'>
+      <nav>
+        <NavLink to='/'>Home</Link>
+        <NavLink to='/about'>About</Link>
+        <NavLink to='/users'>Users</Link>
+      </nav>
+
+      <main>
+        <Routes>
+          <Route path='/' element={<Home />} exact />
+          <Route path='/about' element={<About />} />
+          <Route path='/users' element={<Users />} />
+          <Route path='*' element={<Navigate to='/' replace />} />
+        </Routes>
+      </main>
+    </div>
+  </BrowserRouter>
+);
+```
