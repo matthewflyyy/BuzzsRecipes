@@ -1,0 +1,153 @@
+/* Maybe add in a search bar */
+
+.body {
+    display: flex;
+    flex-direction: column;
+    min-width: 375px;
+    margin: 0;
+    height: 100vh
+  }
+  
+  header {
+    flex: 0 80px;
+    color: #363537;
+    /* background-color: #73877B; */
+    background-color: white;
+    padding-bottom: 10px
+  }
+  /* Maybe make the title a link to the home page */
+  header h1{
+    margin-left: 35px;
+  }
+  
+  main {
+    flex: 1 calc(100vh - 110px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    background: #E6C79C;
+    padding: 0px;
+  }
+  
+  menu {
+    flex: 1;
+    display: flex;
+    /*  overwrite Bootstrap so the menu does not wrap */
+    flex-direction: row !important;
+    list-style: none;
+  }
+
+menu a{
+    background: #363537;
+    border: solid thin darkgray;
+    color: white;
+    padding: 10px 10px;
+    border-radius: 5px;
+}
+
+/* gets rid of the underline under links and change of color when visited */
+menu a:link, a:visited{
+    text-decoration: none;
+    color: white;
+}
+
+menu a:hover{
+    background-color: darkgray;
+}
+
+.dropdown-content {
+    position: absolute;
+    display: none;
+    padding-top: 10px;
+    z-index: 1;
+
+}
+
+ .dropdown:hover .dropdown-content{
+    display: flex;
+    flex-direction: column;
+ }
+
+footer {
+    flex: 0 30px;
+    /* background: #73877B; */
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+footer p{
+    padding-left: 15px;
+    float: left;
+    color: #363537;
+
+}
+
+
+footer a:link, footer a:visited {
+    padding-right: 15px;
+    float: right;
+    color: #363537;
+}
+  
+
+@media (max-height: 600px) {
+header {
+    display: none;
+}
+footer {
+    display: none;
+}
+main {
+    flex: 1 100vh;
+}
+}
+
+.button {
+    background-color: #363537;
+    color: white;
+    padding: 10px;
+    border: solid thin darkgray;
+    border-radius: 5px;
+}
+
+.button:hover{
+    background-color: darkgray;
+}
+
+table, th, td{
+    font-size: calc(8px + 0.3vw);
+    /* min-width: 100px; */
+    border: none;
+    background: #363537;
+    height: 1vh;
+    color: white;
+    border-radius: 5px;
+}
+table{
+    margin-top: 10px;
+}
+th, td{
+    padding: 5px;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.recipe {
+    display: flex;
+    flex: 0 60px;
+    flex-direction: column;
+    align-items: center; 
+    margin-left: 10vw;
+    margin-right: 10vw;
+    padding: 5vw;
+    background-color: white;
+}
+
+.recipe h3{
+    font-size: 3vw;
+}
