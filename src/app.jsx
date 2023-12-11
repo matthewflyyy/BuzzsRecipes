@@ -39,15 +39,14 @@ export default function App() {
         </nav>
         </header>
 
-        <main>
-            <h1>Recipes</h1>
-            <Home />
-            <Login />
-            <Recipes />
-            <About />
-            <MyAccount />
-            <AddRecipe />
-        </main>
+        <Routes>
+            <Route path='/' element={<Home />} exact />
+            <Route path='/login' element={<Login />} />
+            <Route path='/recipes' element={<Recipes />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/myaccount' element={<MyAccount />} />
+            <Route path='/addrecipe' element={<AddRecipe />} />
+        </Routes>
 
         <footer>
         <p>Matthew Nelson</p>
