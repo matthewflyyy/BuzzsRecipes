@@ -1,31 +1,91 @@
 import React from 'react';
 
 export function Recipes() {
-  return (
+    const [recipes, setRecipes] = React.useState([]);
+    
+    React.useEffect(() => {
+        fetch('/api/recipes')
+          .then((response) => response.json())
+          .then((recipes) => {
+            setRecipes(recipes);
+            localStorage.setItem('recipes', JSON.stringify(recipes));
+          })
+          .catch(() => {
+            const recipes = localStorage.getItem('recipes');
+            if (recipes) {
+              setRecipes(JSON.parse(recipes));
+            }
+          });
+    }, []);
+  
+    const recipeList = [];
+    if (recipes.length > 0) {
+    for (const [index, recipeData] of recipes.entries()) {
+        console.log(recipeData)
+        recipeList.push(
+                <div key={index} >
+                    <br />
+                    <div className="recipe">
+                    <h3>{recipeData.name}</h3>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Prep Time</th>
+                            <th>Cook Time</th>
+                            <th>Amount Made</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{recipeData.prepTime}</td>
+                            <td>{recipeData.cookTime}</td>
+                            <td>{recipeData.amountMade}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h4> Ingedrients </h4>
+                        <ul>
+                            {recipeData.ingredients && recipeData.ingredients.map((ingredient) => (<li>{ingredient}</li>))}
+                        </ul>
+                    <h4> Preparation and cooking instructions </h4>
+                        <ol>
+                            {recipeData.directions && recipeData.directions.map((step) => (<li>{step}</li>))}
+                        </ol>
+                        </div>
+                    </div>
+        );
+    }
+    }
+  
+    return (
     <main>
-    <div class="players">
+    <div className="players">
       <div id="player-messages">
-        <div class="event"><span class="player-event">Talmage</span> posted a recipe: "Breakfast Omelette"</div>
-        <div class="event"><span class="player-event">Tim</span> posted a recipe: "Arepas"</div>
+        <div className="event"><span className="player-event">Talmage</span> posted a recipe: "Breakfast Omelette"</div>
+        <div className="event"><span className="player-event">Tim</span> posted a recipe: "Arepas"</div>
       </div>
     </div>
     <h1>All Recipes</h1>
     <div id="recipe-container">
-    <p>
-      <div class="recipe">
+    <br />
+      <div className="recipe">
       <h3> Venezuelan arepas </h3>
       {/* <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Arepa_de_pabellon.jpg/440px-Arepa_de_pabellon.jpg" alt="Arepa with meat" width="200"> --> */}
       <table>
+        <thead>
           <tr>
               <th>Prep Time</th>
               <th>Cook Time</th>
               <th>Amount Made</th>
           </tr>
+        </thead>
+        <tbody>
           <tr>
               <td>10 min</td>
               <td>10 min</td>
               <td>6 arepas (2-3 servings)</td>
           </tr>
+        </tbody>
       </table>
       <h4> Ingedrients </h4>
           <ul>
@@ -46,24 +106,27 @@ export function Recipes() {
               <li>Cut halfway open and enjoy with your favorite fillings!</li>
           </ol>
       </div>
-    </p>
 
 
-    <p>
-      <div class="recipe">
+    <br />
+      <div className="recipe">
       <h3> Breakfast Omelette </h3>
       {/* <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Omelet_With_Fixings.jpg/440px-Omelet_With_Fixings.jpg" alt="Omelette" width="200"> --> */}
       <table>
+        <thead>
           <tr>
               <th>Prep Time</th>
               <th>Cook Time</th>
               <th>Amount Made</th>
           </tr>
+        </thead>
+        <tbody>
           <tr>
               <td>5 min</td>
               <td>5 min</td>
               <td>1 omelette (1 serving)</td>
           </tr>
+        </tbody>
       </table>
       <h4> Ingedrients </h4>
           <ul>
@@ -85,7 +148,7 @@ export function Recipes() {
               <li>Add salt, peper, salsa or anything else you like and enjoy!</li>
           </ol>
       </div>
-    </p>
+      <div className='dbRecipes'>{recipeList}</div>
     </div>
   </main>
   );
