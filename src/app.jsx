@@ -22,32 +22,31 @@ export default function App() {
             <li><a href="index.html">Home</a></li>
             <li>
                 <div id="recipeLink" className="dropdown">
-                    <a className="dropbtn" href="recipes.html">Recipes</a>
+                    <NavLink className='dropbtn' to='recipes'>Recipes</NavLink>
                     <div id="myDropdown" className="dropdown-content">
-                    <a href="recipes.html">All</a>
-                    <a href="breakfast.html">Breakfast</a>
-                    <a href="lunch.html">Lunch</a>
-                    <a href="dinner.html">Dinner</a>
+                        <NavLink to='recipes'>All</NavLink>
+                        <NavLink to='breakfast'>Breakfast</NavLink>
+                        <NavLink to='lunch'>Lunch</NavLink>
+                        <NavLink to='dinner'>Dinner</NavLink>
                     </div>
                 </div>
             </li>
-            <li><a href="about.html">About</a></li>
-            <li><a id="logInBtn" href="login.html">Log In</a></li>
-            <li><a id="myaccount" href="myaccount.html">My Account</a></li>
-            <li><a id="signOut" href="login.html" onClick="logout()">Sign Out</a></li>
-            
+            <li><NavLink to='about'>About</NavLink></li>
+            <li><NavLink id='logInBtn' to='login'>Log In</NavLink></li>
+            <li><NavLink id='myaccount' to='myaccount'>My Account</NavLink></li>
+            <li><NavLink id='signOut' to='login' onClick='logout'>Sign Out</NavLink></li>  
             </menu>
         </nav>
         </header>
 
         <main>
-        <h1>Recipes</h1>
-        <Home />
-        <Login />
-        <Recipes />
-        <About />
-        <MyAccount />
-        <AddRecipe />
+            <h1>Recipes</h1>
+            <Home />
+            <Login />
+            <Recipes />
+            <About />
+            <MyAccount />
+            <AddRecipe />
         </main>
 
         <footer>
