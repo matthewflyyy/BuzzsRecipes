@@ -46,6 +46,7 @@ export default function App() {
             <Route path='/about' element={<About />} />
             <Route path='/myaccount' element={<MyAccount />} />
             <Route path='/addrecipe' element={<AddRecipe />} />
+            <Route path='*' element={<NotFound />} />
         </Routes>
 
         <footer>
@@ -59,3 +60,7 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
+function NotFound() {
+    return <main className='container-fluid bg-secondary text-center'>404: Return to sender. Address unknown.</main>;
+  }
