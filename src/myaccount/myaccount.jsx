@@ -1,10 +1,11 @@
 import React from 'react';
 import './myaccount.css'
+import { NavLink } from 'react-router-dom';
 
 export function MyAccount({ userName }) {
   return (
     <main>
-      <a className="top-right" to="./addrecipe">Add Recipe</a>
+      <NavLink className="top-right" to="../addrecipe">Add Recipe</NavLink>
       <h1 className="user-name">{userName}</h1>
       <p>*Brooklynn just sent you a recipe*</p>
       <h3>Saved Recipes</h3>
