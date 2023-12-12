@@ -2,6 +2,19 @@ import React from 'react';
 import './about.css';
 
 export function About() {
+  const [quote, setQuote] = React.useState('Loading...');
+  const [quoteAuthor, setQuoteAuthor] = React.useState('unknown');
+
+  React.useEffect(() => {
+    fetch('https://api.quotable.io/random')
+      .then((response) => response.json())
+      .then((data) => {
+        setQuote(data.content);
+        setQuoteAuthor(data.author);
+      })
+      .catch();
+  }, []);
+
   return (
     <main>
       <div className="about-us">
@@ -16,7 +29,10 @@ export function About() {
         <li>Saving recipes to your own account for easy access later</li>
       </ul>
       </div>
-      <div id="quote"></div>
+      <div id="quote">
+        <p>"{quote}"</p>
+        <p>{quoteAuthor}</p>
+      </div>
       <p className="patience">*Please have patience as we continue to develop the site. We will slowly be rolling out all features and be making the interface more accessible. Please contact us with any questions.*</p>
     </main>
   );
