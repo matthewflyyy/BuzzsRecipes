@@ -6,10 +6,15 @@ import { Recipes } from './recipes/recipes';
 import { About } from './about/about';
 import { AddRecipe } from './addrecipe/addrecipe';
 import { MyAccount } from './myaccount/myaccount';
+import { AuthState } from './login/authState'
 import './app.css';
 
 
 export default function App() {
+    const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
+    const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
+    const [authState, setAuthState] = React.useState(currentAuthState);
+
   return (
     <BrowserRouter>
         <div className='body'>
@@ -20,21 +25,41 @@ export default function App() {
             <menu>
 
             <li><a href="index.html">Home</a></li>
-            <li>
-                <div id="recipeLink" className="dropdown">
-                    <NavLink className='dropbtn' to='recipes'>Recipes</NavLink>
-                    <div id="myDropdown" className="dropdown-content">
-                        <NavLink to='recipes'>All</NavLink>
-                        <NavLink to='breakfast'>Breakfast</NavLink>
-                        <NavLink to='lunch'>Lunch</NavLink>
-                        <NavLink to='dinner'>Dinner</NavLink>
-                    </div>
-                </div>
-            </li>
-            <li><NavLink to='about'>About</NavLink></li>
-            <li><NavLink id='logInBtn' to='login'>Log In</NavLink></li>
-            <li><NavLink id='myaccount' to='myaccount'>My Account</NavLink></li>
-            <li><NavLink id='signOut' to='login' onClick='logout'>Sign Out</NavLink></li>  
+            {
+                authState === AuthState.Authenticated && (
+                    <li>
+                        <div id="recipeLink" className="dropdown">
+                            <NavLink className='dropbtn' to='recipes'>Recipes</NavLink>
+                            <div id="myDropdown" className="dropdown-content">
+                                <NavLink to='recipes'>All</NavLink>
+                                <NavLink to='breakfast'>Breakfast</NavLink>
+                                <NavLink to='lunch'>Lunch</NavLink>
+                                <NavLink to='dinner'>Dinner</NavLink>
+                            </div>
+                        </div>
+                    </li>
+                )
+            }
+            {
+                authState === AuthState.Authenticated && (
+                    <li><NavLink to='about'>About</NavLink></li>
+                )
+            }
+            {
+                authState === AuthState.Authenticated && (
+                    <li><NavLink id='logInBtn' to='login'>Log In</NavLink></li>
+                )
+            }
+            {
+                authState === AuthState.Authenticated && (
+                    <li><NavLink id='myaccount' to='myaccount'>My Account</NavLink></li>
+                )
+            }
+            {
+                authState === AuthState.Authenticated && (
+                    <li><NavLink id='signOut' to='login' onClick='logout'>Sign Out</NavLink></li>  
+                )
+            }
             </menu>
         </nav>
         </header>
