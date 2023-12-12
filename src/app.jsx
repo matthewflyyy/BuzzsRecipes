@@ -40,36 +40,34 @@ export default function App() {
                     </li>
                 )
             }
-            {
-                authState === AuthState.Authenticated && (
+            { authState === AuthState.Authenticated && (
                     <li><NavLink to='about'>About</NavLink></li>
-                )
-            }
-            {
-                authState === AuthState.Authenticated && (
+            )}
+            {authState === AuthState.Authenticated && (
                     <li><NavLink id='logInBtn' to='login'>Log In</NavLink></li>
-                )
-            }
-            {
-                authState === AuthState.Authenticated && (
+            )}
+            {authState === AuthState.Authenticated && (
                     <li><NavLink id='myaccount' to='myaccount'>My Account</NavLink></li>
-                )
-            }
-            {
-                authState === AuthState.Authenticated && (
+                )}
+            {authState === AuthState.Authenticated && (
                     <li><NavLink id='signOut' to='login' onClick='logout'>Sign Out</NavLink></li>  
-                )
-            }
+            )}
             </menu>
         </nav>
         </header>
 
         <Routes>
             <Route path='/' element={<Home />} exact />
-            <Route path='/login' element={<Login />} />
+            <Route path='/login' element={<Login 
+                userName={userName}
+                authState={authState}
+                onAuthChange={(userName, authState) => {
+                    setAuthState(authState);
+                    setUserName(userName);
+                }}/>} />
             <Route path='/recipes' element={<Recipes />} />
             <Route path='/about' element={<About />} />
-            <Route path='/myaccount' element={<MyAccount />} />
+            <Route path='/myaccount' element={<MyAccount userName={userName} />} />
             <Route path='/addrecipe' element={<AddRecipe />} />
             <Route path='*' element={<NotFound />} />
         </Routes>
