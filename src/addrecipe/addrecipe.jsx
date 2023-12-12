@@ -41,6 +41,24 @@ export function AddRecipe() {
     })
   }
 
+  const handleCookTimeChange = (value) => {
+    setRecipeData((prevData) => {
+      return { ...prevData, cookTime: value}
+    })
+  }
+
+  const handlePrepChange = (value) => {
+    setRecipeData((prevData) => {
+      return { ...prevData, prepTime: value}
+    })
+  }
+
+  const handleAmountChange = (value) => {
+    setRecipeData((prevData) => {
+      return { ...prevData, amountMade: value}
+    })
+  }
+
   const handleDirectionChange = (index, value) => {
     setRecipeData((prevData) => {
       const newDirections = [...prevData.directions];
@@ -102,9 +120,9 @@ export function AddRecipe() {
               <input type="submit" value="Upload">
           </form>
           </div> --> */}
-          <input type="text" id="prep-time" placeholder="Preparation Time" />
-          <input type="text" id="cook-time" placeholder="Cooking Time" />
-          <input type="text" id="amount-made" placeholder="Servings Made" />
+          <input type="text" id="prep-time" value={recipeData.prepTime} onChange={(e) => handlePrepChange(e.target.value)} placeholder="Preparation Time" />
+          <input type="text" id="cook-time" value={recipeData.cookTime} onChange={(e) => handleCookTimeChange(e.target.value)} placeholder="Cooking Time" />
+          <input type="text" id="amount-made" value={recipeData.amountMade} onChange={(e) => handleAmountChange(e.target.value)} placeholder="Servings Made" />
           <div className="ingredients">
             {recipeData.ingredients.map((ingredient, index) => (
               <input key={index} type='text' className='ingredient' value={ingredient} onChange={(e) => handleIngredientChange(index, e.target.value)} placeholder='Ingredient'/>
