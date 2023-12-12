@@ -43,9 +43,7 @@ export default function App() {
             { authState === AuthState.Authenticated && (
                     <li><NavLink to='about'>About</NavLink></li>
             )}
-            {authState === AuthState.Authenticated && (
-                    <li><NavLink id='logInBtn' to='login'>Log In</NavLink></li>
-            )}
+            <li><NavLink id='logInBtn' to='login'>Log In</NavLink></li>
             {authState === AuthState.Authenticated && (
                     <li><NavLink id='myaccount' to='myaccount'>My Account</NavLink></li>
                 )}
