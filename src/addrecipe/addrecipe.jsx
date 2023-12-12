@@ -12,7 +12,8 @@ export function AddRecipe() {
     ingredients: [''], // Initialize with one empty ingredient
     directions: [''], // Initialize with one empty direction
   });
-  console.log(recipeData.ingredients);
+
+  console.log(recipeData.name);
   const addIngredient = () => {
     setRecipeData((prevData) => ({
       ...prevData,
@@ -33,6 +34,12 @@ export function AddRecipe() {
       return { ...prevData, ingredients: newIngredients };
     })
   };
+
+  const handleNameChange = (value) => {
+    setRecipeData((prevData) => {
+      return { ...prevData, name: value}
+    })
+  }
 
   const handleDirectionChange = (index, value) => {
     setRecipeData((prevData) => {
@@ -87,7 +94,7 @@ export function AddRecipe() {
               <option value="audi">Audi</option>
             </select>
           </form> --> */}
-          <input type="text" id="recipe-name" placeholder="Recipe Name" />
+          <input type="text" id="recipe-name" value={recipeData.name} onChange={(e) => handleNameChange(e.target.value)} placeholder="Recipe Name" />
           {/* <!-- <div class="imageUpload">
             <form id="image-load" action="upload.php" method="post" enctype="multipart/form-data">
               <label for="image-upload">Choose an image:</label>
@@ -104,13 +111,15 @@ export function AddRecipe() {
             ))}
           </div>
               <a href="#" id="add-ingredient-link" onClick={addIngredient} className="add-step">+ Add Ingredient</a>
-          <input type="text" className="directions" placeholder="Step 1" />
-          <input type="text" className="directions" placeholder="Step 2" />
-          <input type="text" className="directions" placeholder="Step 3" />
+          <div className='direction-div'>
+            {recipeData.directions.map((direction, index) => (
+              <input key={index} type='text' className='directions' value={direction} onChange={(e) => handleDirectionChange(index, e.target.value)} placeholder={`Step ${index + 1}`}/>
+            ))}
+          </div>
         </div>
-          <a href="#" id="add-step-link" className="add-step">+ Add Step</a>
+          <a href="#" id="add-step-link" onClick={addDirection} className="add-step">+ Add Step</a>
           <div className="side-by-side">
-              <NavLink className="button" onClick='addRecipe' to='../myaccount' type="submit">Create</NavLink>
+              <button className='button' type='submit'>Create</button>
           </div>
       </form>
     </div>
