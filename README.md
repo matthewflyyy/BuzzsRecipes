@@ -84,3 +84,10 @@ For this deliverable, I created a new "web socket" page that can be accessed fro
 -**Frontend makes WebSocket connection** - Done!
 -**Data sent over WebSocket connection** - Done!
 -**WebSocket data displayed** - Counter is displayed in real time.
+
+# React Deliverable
+For this deliverable I converted the application over to use React.
+-**Bundled and transpiled** - Done!
+-**Components** - Converted all of my different pages to components.
+-**Router** - Added routing between all the different components.
+-**Hooks** - Properly used useState and effects to make changes to properties.
