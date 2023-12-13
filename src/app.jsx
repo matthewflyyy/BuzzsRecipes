@@ -24,7 +24,7 @@ export default function App() {
         <nav>
             <menu>
 
-            <li><a href="index.html">Home</a></li>
+            <li><NavLink to="">Home</NavLink></li>
             {
                 authState === AuthState.Authenticated && (
                     <li>
@@ -55,7 +55,7 @@ export default function App() {
         </header>
 
         <Routes>
-            <Route path='/' element={<Home />} exact />
+            <Route path='/' element={<Home />} />
             <Route path='/login' element={<Login 
                 userName={userName}
                 authState={authState}
